@@ -13,19 +13,23 @@
 
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
-                <img class="h-9 w-9 rounded-full object-cover border border-gray-300" 
-                     src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" 
-                     alt="Avatar">
+                @php
+                    $avatarUrl = Auth::user()->photo
+                        ? asset('storage/' . Auth::user()->photo)
+                        : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=random';
+                @endphp
+                <img class="h-9 w-9 rounded-full object-cover border border-gray-300" src="{{ $avatarUrl }}"
+                    alt="Avatar">
                 <div class="text-left hidden md:block">
                     <p class="text-sm font-semibold text-gray-700">{{ Auth::user()->name }}</p>
-                    <p class="text-xs text-gray-500 uppercase">{{ Auth::user()->role }}</p>
+                    <p class="text-xs text-gray-500 uppercase">{{ Auth::user()->getRoleNames()->first() ?? 'User' }}</p>
                 </div>
                 <i class="fas fa-chevron-down text-xs text-gray-400 ml-1"></i>
             </button>
 
             <div x-show="open" @click.away="open = false" x-cloak
-                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-50">
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-50">
+                <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     <i class="fas fa-user mr-2 w-4"></i> Profil
                 </a>
                 <div class="border-t border-gray-100"></div>

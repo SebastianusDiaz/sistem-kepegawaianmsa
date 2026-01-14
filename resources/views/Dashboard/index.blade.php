@@ -8,14 +8,14 @@
     <div class="bg-white p-6 rounded-xl shadow-sm mb-8 border-l-4 border-blue-600 flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Halo, {{ Auth::user()->name }}! 👋</h1>
-            <p class="text-gray-600 mt-1">Anda login sebagai <span class="font-bold uppercase text-blue-600">{{ Auth::user()->role }}</span>.</p>
+            <p class="text-gray-600 mt-1">Anda login sebagai <span class="font-bold uppercase text-blue-600">{{ Auth::user()->getRoleNames()->first() ?? 'User' }}</span>.</p>
         </div>
         <div class="hidden sm:block">
             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">{{ now()->format('l, d F Y') }}</span>
         </div>
     </div>
 
-    @if(Auth::user()->role === 'admin')
+    @if(Auth::user()->hasRole('admin'))
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <div class="bg-white p-5 rounded-xl shadow-sm flex items-center border border-gray-100">
             <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg">
@@ -58,7 +58,7 @@
         </ul>
     </div>
 
-    @elseif(Auth::user()->role === 'direktur')
+    @elseif(Auth::user()->hasRole('direktur'))
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div class="bg-gradient-to-r from-blue-600 to-blue-500 text-white p-6 rounded-xl shadow-lg">
             <h3 class="text-lg font-semibold opacity-90">Total Kerjasama</h3>
@@ -83,7 +83,7 @@
         </div>
     </div>
 
-    @elseif(Auth::user()->role === 'wartawan')
+    @elseif(Auth::user()->hasRole('wartawan'))
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-orange-500">
             <p class="text-gray-500 text-sm">Deadline Hari Ini</p>

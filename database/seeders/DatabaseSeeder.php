@@ -16,34 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-       User::create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-        ]);
-
-        User::create([
-            'name' => 'Pegawai Kantor',
-            'email' => 'pegawai@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'pegawai',
-        ]);
-
-        User::create([
-            'name' => 'Wartawan Media',
-            'email' => 'wartawan@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'wartawan',
-        ]);
-
-        User::create([
-            'name' => 'Direktur Utama',
-            'email' => 'direktur@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'direktur',
+        $this->call([
+            RoleSeeder::class,
+            DivisionSeeder::class,
+            PositionSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
