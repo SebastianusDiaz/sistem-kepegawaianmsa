@@ -231,10 +231,6 @@ class UserController extends Controller
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
-            'birth_place' => 'nullable|string|max:255',
-            'birth_date' => 'nullable|date',
-            'gender' => 'nullable|in:male,female',
-            'signature' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
@@ -252,29 +248,14 @@ class UserController extends Controller
 
                 $user->update($userData);
 
-                // 2. Prepare Profile Data
-                $profileData = [
-                    'phone' => $request->phone,
-                    'address' => $request->address,
-                    'birth_place' => $request->birth_place,
-                    'birth_date' => $request->birth_date,
-                    'gender' => $request->gender,
-                ];
-
-                // 3. Handle Signature Upload
-                if ($request->hasFile('signature')) {
-                    $archive = $this->archiveService->store(
-                        $request->file('signature'),
-                        'Digital Signature',
-                        $user->id
-                    );
-                    $profileData['signature_path'] = $archive->file_path;
-                }
-
-                // 4. Update Profile
+                // 2. Update Profile (Phone, Address)
                 $user->profile()->updateOrCreate(
                     ['user_id' => $user->id],
-                    $profileData
+                    [
+                        'phone' => $request->phone,
+                        'address' => $request->address,
+                        // NIP, Division, Position are NOT editable by user
+                    ]
                 );
             });
 

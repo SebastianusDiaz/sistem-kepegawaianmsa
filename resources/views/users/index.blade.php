@@ -16,7 +16,7 @@
                 </div>
                 <div class="mt-4 sm:mt-0">
                     <a href="{{ route('users.create') }}"
-                        class="inline-flex items-center justify-center px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all transform hover:-translate-y-0.5">
+                        class="inline-flex items-center justify-center px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:-translate-y-0.5">
                         <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
@@ -30,8 +30,8 @@
                 <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-gray-100">
                     <div class="p-5">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-orange-50 rounded-md p-3">
-                                <svg class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div class="flex-shrink-0 bg-indigo-50 rounded-md p-3">
+                                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                 </svg>
                             </div>
@@ -79,13 +79,13 @@
                         </svg>
                     </div>
                     <input type="text" name="search" value="{{ request('search') }}"
-                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition duration-150 ease-in-out"
+                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out"
                         placeholder="Cari berdasarkan nama, email, atau NIP...">
                 </div>
 
                 {{-- Filter Options --}}
                 <div class="flex items-center gap-2 w-full sm:w-auto">
-                    <select name="role" onchange="this.form.submit()" class="block w-full pl-3 pr-10 py-2.5 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-lg">
+                    <select name="role" onchange="this.form.submit()" class="block w-full pl-3 pr-10 py-2.5 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-lg">
                         <option value="">Semua Role</option>
                         @foreach($roles as $role)
                             <option value="{{ $role }}" {{ request('role') == $role ? 'selected' : '' }}>
@@ -128,7 +128,7 @@
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10">
                                             {{-- Avatar Gradient --}}
-                                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-sm">
+                                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm">
                                                 <span class="text-white font-bold text-sm tracking-tight">
                                                     {{ substr($user->name, 0, 2) }}
                                                 </span>
@@ -152,9 +152,9 @@
                                         @foreach($user->getRoleNames() as $role)
                                             @php
                                                 $badgeColor = match($role) {
-                                                    'admin' => 'bg-orange-50 text-orange-700 ring-orange-600/20',
+                                                    'admin' => 'bg-purple-50 text-purple-700 ring-purple-600/20',
                                                     'direktur' => 'bg-blue-50 text-blue-700 ring-blue-600/20',
-                                                    'wartawan' => 'bg-green-50 text-green-700 ring-green-600/20',
+                                                    'wartawan' => 'bg-indigo-50 text-indigo-700 ring-indigo-600/20',
                                                     default => 'bg-gray-50 text-gray-600 ring-gray-500/10',
                                                 };
                                             @endphp
@@ -196,7 +196,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end space-x-2">
                                         <a href="{{ route('users.edit', $user->id) }}" 
-                                           class="p-2 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors" 
+                                           class="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" 
                                            title="Edit User">
                                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -233,7 +233,7 @@
                                             Belum ada user yang ditambahkan atau tidak ditemukan hasil untuk pencarian Anda.
                                         </p>
                                         <div class="mt-4">
-                                            <a href="{{ route('users.create') }}" class="text-sm font-medium text-orange-600 hover:text-orange-500">
+                                            <a href="{{ route('users.create') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
                                                 + Tambah User Baru
                                             </a>
                                         </div>

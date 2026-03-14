@@ -7,23 +7,13 @@
 
         {{-- Breadcrumb --}}
         <nav class="mb-6 flex items-center justify-between">
-            @if(request('from') === 'published')
-                <a href="{{ route('assignments.published') }}"
-                    class="inline-flex items-center text-sm font-medium text-green-600 hover:text-green-800 transition-colors">
-                    <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                    Kembali ke Berita Terbit
-                </a>
-            @else
-                <a href="{{ route('assignments.index') }}"
-                    class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">
-                    <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                    Kembali ke Daftar
-                </a>
-            @endif
+            <a href="{{ route('assignments.index') }}"
+                class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">
+                <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Kembali ke Daftar
+            </a>
             <span class="text-xs font-mono text-gray-400">ID: #{{ substr($assignment->id, 0, 8) }}</span>
         </nav>
 
@@ -39,8 +29,8 @@
                             @php
                                 $statusColors = [
                                     'draft' => 'bg-gray-100 text-gray-800',
-                                    'assigned' => 'bg-orange-100 text-orange-800',
-                                    'accepted' => 'bg-orange-100 text-orange-800',
+                                    'assigned' => 'bg-blue-100 text-blue-800',
+                                    'accepted' => 'bg-indigo-100 text-indigo-800',
                                     'on_site' => 'bg-green-100 text-green-800',
                                     'submitted' => 'bg-purple-100 text-purple-800',
                                     'completed' => 'bg-gray-800 text-white',
@@ -76,7 +66,7 @@
                             {{ $assignment->title }}
                         </h1>
 
-                        <div class="prose prose-orange max-w-none text-gray-600">
+                        <div class="prose prose-indigo max-w-none text-gray-600">
                             <h3 class="text-gray-900 text-lg font-semibold">Brief & Deskripsi</h3>
                             <p class="whitespace-pre-line">{{ $assignment->description }}</p>
                         </div>
@@ -88,10 +78,11 @@
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
                             <h3 class="text-lg font-bold text-gray-900">Hasil Liputan</h3>
-                            @if(Auth::id() == $assignment->reporter_id && $assignment->status === 'submitted')
+
+                            @if(Auth::id() === $assignment->reporter_id && $assignment->status === 'submitted')
                                 <button type="button"
                                     onclick="document.getElementById('completion-modal').classList.remove('hidden')"
-                                    class="text-xs text-orange-600 hover:text-orange-900 font-medium flex items-center bg-orange-50 px-3 py-1.5 rounded-lg border border-orange-200 hover:bg-orange-100 transition-colors">
+                                    class="text-xs text-indigo-600 hover:text-indigo-900 font-medium flex items-center bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-200 hover:bg-indigo-100 transition-colors">
                                     <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -99,24 +90,12 @@
                                     Ubah Bukti
                                 </button>
                             @endif
-
-                            @if(($assignment->status === 'published' || $assignment->status === 'completed') && Auth::user()->hasRole(['admin', 'editor', 'direktur']))
-                                <button type="button"
-                                    onclick="document.getElementById('edit-publication-modal').classList.remove('hidden')"
-                                    class="text-xs text-blue-600 hover:text-blue-900 font-medium flex items-center bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors">
-                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    Edit Publikasi
-                                </button>
-                            @endif
                         </div>
                         <div class="p-6 space-y-6">
                             {{-- Foto Bukti --}}
                             @if($assignment->evidence_photo)
                                 <div>
-                                    <h4 class="text-sm font-medium text-gray-500 mb-2">Foto Cover Berita</h4>
+                                    <h4 class="text-sm font-medium text-gray-500 mb-2">Foto Dokumentasi</h4>
                                     <div x-data="{ open: false }" class="relative group max-w-lg">
                                         <img src="{{ asset($assignment->evidence_photo) }}" alt="Bukti Foto"
                                             class="rounded-lg shadow-md w-40 h-40 object-cover cursor-zoom-in transition-transform hover:scale-[1.01]"
@@ -176,9 +155,9 @@
                                             </svg>
                                         </div>
                                         <div class="ml-4 flex-1 min-w-0">
-                                            <h5 class="text-sm font-bold text-gray-900">Link Dokumentasi (Foto/Video)</h5>
+                                            <h5 class="text-sm font-bold text-gray-900">Link Berita</h5>
                                             <a href="{{ $assignment->evidence_link }}" target="_blank"
-                                                class="text-xs text-orange-600 hover:text-orange-800 font-medium mt-1 truncate block hover:underline">
+                                                class="text-xs text-indigo-600 hover:text-indigo-800 font-medium mt-1 truncate block hover:underline">
                                                 {{ $assignment->evidence_link }}
                                             </a>
                                         </div>
@@ -189,71 +168,25 @@
                     </div>
                 @endif
 
-                {{-- RIWAYAT DOKUMEN (DOCUMENT HISTORY) --}}
-                @if($assignment->attachments->count() > 0)
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mt-6">
-                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
-                            <h3 class="text-lg font-bold text-gray-900">Riwayat Dokumen</h3>
-                        </div>
-                        <ul class="divide-y divide-gray-100">
-                            @foreach($assignment->attachments as $attachment)
-                                <li class="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 bg-gray-100 p-2 rounded-lg text-gray-500">
-                                            @if($attachment->file_type === 'photo')
-                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                </svg>
-                                            @else
-                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 011.414.586l5.414 5.414a1 1 0 01.586 1.414V19a2 2 0 01-2 2z" />
-                                                </svg>
-                                            @endif
-                                        </div>
-                                        <div class="ml-4">
-                                            <p class="text-sm font-medium text-gray-900">
-                                                {{ $attachment->file_type === 'photo' ? 'Foto Bukti' : 'Dokumen Bukti' }}
-                                                <span
-                                                    class="text-xs text-gray-500 font-normal">({{ \Illuminate\Support\Str::upper($attachment->mime_type ?? 'FILE') }})</span>
-                                            </p>
-                                            <p class="text-xs text-gray-500">{{ $attachment->created_at->format('d M Y, H:i') }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center space-x-4">
-                                        <span class="text-xs text-gray-400 font-mono">{{ round($attachment->size / 1024, 0) }}
-                                            KB</span>
-                                        <a href="{{ asset($attachment->file_path) }}" target="_blank"
-                                            class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                            Download
-                                        </a>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
                 {{-- RESPON PEGAWAI (STAFF RESPONSE) --}}
                 @if($assignment->staff_response_note || $assignment->staff_response_file)
-                    <div class="bg-orange-50 rounded-2xl shadow-sm border border-orange-100 overflow-hidden">
-                        <div class="px-6 py-4 border-b border-orange-100 bg-orange-100/50 flex items-center gap-2">
-                            <svg class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="bg-indigo-50 rounded-2xl shadow-sm border border-indigo-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-indigo-100 bg-indigo-100/50 flex items-center gap-2">
+                            <svg class="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                             </svg>
-                            <h3 class="text-lg font-bold text-orange-900">Respon Kantor</h3>
+                            <h3 class="text-lg font-bold text-indigo-900">Respon Kantor</h3>
                         </div>
                         <div class="p-6">
                             <div
-                                class="prose prose-sm max-w-none text-orange-900 bg-white p-4 rounded-xl border border-orange-100">
+                                class="prose prose-sm max-w-none text-indigo-900 bg-white p-4 rounded-xl border border-indigo-100">
                                 <p>{{ $assignment->staff_response_note }}</p>
                             </div>
                             @if($assignment->staff_response_file)
                                 <div class="mt-4">
                                     <a href="{{ asset($assignment->staff_response_file) }}" target="_blank"
-                                        class="inline-flex items-center px-4 py-2 border border-orange-300 shadow-sm text-sm font-medium rounded-md text-orange-700 bg-white hover:bg-orange-50 transition-colors">
+                                        class="inline-flex items-center px-4 py-2 border border-indigo-300 shadow-sm text-sm font-medium rounded-md text-indigo-700 bg-white hover:bg-indigo-50 transition-colors">
                                         <svg class="mr-2 -ml-1 h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -276,15 +209,15 @@
             <div class="lg:col-span-1 space-y-6">
 
                 {{-- CARD 1: Action Center (Hanya untuk Reporter yang bertugas) --}}
-                @if(Auth::id() == $assignment->reporter_id)
-                    <div class="bg-white rounded-2xl shadow-lg border border-orange-100 overflow-hidden relative">
-                        <div class="bg-orange-600 px-6 py-3">
+                @if(Auth::id() === $assignment->reporter_id)
+                    <div class="bg-white rounded-2xl shadow-lg border border-indigo-100 overflow-hidden relative">
+                        <div class="bg-indigo-600 px-6 py-3">
                             <h3 class="text-white font-bold text-sm uppercase tracking-wider flex items-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
-                                Aksi Wartawan
+                                Aksi Reporter
                             </h3>
                         </div>
 
@@ -314,7 +247,7 @@
                                         @csrf @method('PATCH')
                                         <input type="hidden" name="status" value="accepted">
                                         <button type="submit"
-                                            class="w-full py-3 px-4 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow transition-all transform hover:-translate-y-0.5">
+                                            class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow transition-all transform hover:-translate-y-0.5">
                                             Terima Penugasan
                                         </button>
                                     </form>
@@ -364,76 +297,19 @@
                                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                     </svg>
-                                    Kirim ke Review
+                                    Selesai & Upload Bukti
                                 </button>
-
-                            @elseif($assignment->status === 'revision')
-                                {{-- REVISION STATUS: Show notes and allow resubmit --}}
-                                <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-300 text-center space-y-3">
-                                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100">
-                                        <svg class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-lg font-bold text-yellow-800">Revisi Diperlukan</h4>
-                                        <p class="text-sm text-yellow-600 mt-1">Editor meminta revisi atas liputan Anda.</p>
-                                    </div>
-                                </div>
-
-                                {{-- Discussion/Revision Notes --}}
-                                @if($assignment->discussions && $assignment->discussions->count() > 0)
-                                    <div class="mt-4 bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
-                                        <div class="px-4 py-2 bg-gray-100 border-b border-gray-200">
-                                            <h5 class="text-sm font-bold text-gray-700 flex items-center">
-                                                <i class="fas fa-comments mr-2 text-orange-500"></i> Catatan dari Editor
-                                            </h5>
-                                        </div>
-                                        <div class="p-4 max-h-48 overflow-y-auto space-y-3">
-                                            @foreach($assignment->discussions->take(5)->reverse() as $msg)
-                                                <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
-                                                    <div class="flex items-center justify-between mb-1">
-                                                        <span
-                                                            class="text-xs font-semibold text-gray-600">{{ $msg->user->name ?? 'Editor' }}</span>
-                                                        <span
-                                                            class="text-xs text-gray-400">{{ $msg->created_at->format('d M, H:i') }}</span>
-                                                    </div>
-                                                    <p class="text-sm text-gray-800 whitespace-pre-line">{!! nl2br(e($msg->message)) !!}</p>
-                                                    @if($msg->file_path)
-                                                        <a href="{{ asset('storage/' . $msg->file_path) }}" target="_blank"
-                                                            class="text-xs text-blue-600 mt-2 inline-flex items-center">
-                                                            <i class="fas fa-paperclip mr-1"></i> Lampiran
-                                                        </a>
-                                                    @endif
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-
-                                {{-- Resubmit Button --}}
-                                <button type="button"
-                                    onclick="document.getElementById('completion-modal').classList.remove('hidden')"
-                                    class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow transition-all transform hover:-translate-y-0.5 mt-4 flex items-center justify-center">
-                                    <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                    </svg>
-                                    Kirim Ulang ke Review
-                                </button>
-
                             @elseif($assignment->status === 'submitted' || $assignment->status === 'completed')
-                                <div class="bg-orange-50 rounded-lg p-4 border border-orange-200 text-center space-y-3">
-                                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-orange-100">
-                                        <svg class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div class="bg-blue-50 rounded-lg p-4 border border-blue-200 text-center space-y-3">
+                                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
+                                        <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="text-lg font-bold text-orange-800">Menunggu Review</h4>
-                                        <p class="text-sm text-orange-600 mt-1">Tugas sedang direview oleh Editor.</p>
+                                        <h4 class="text-lg font-bold text-blue-800">Liputan Selesai</h4>
+                                        <p class="text-sm text-blue-600 mt-1">Tugas telah diselesaikan.</p>
                                     </div>
 
                                     @if($assignment->evidence_link)
@@ -486,7 +362,7 @@
                                         : urlencode($assignment->location_name);
                                 @endphp
                                 <a href="https://www.google.com/maps/search/?api=1&query={{ $mapsQuery }}" target="_blank"
-                                    class="inline-flex items-center mt-2 text-xs text-orange-600 hover:text-orange-800 font-medium">
+                                    class="inline-flex items-center mt-2 text-xs text-indigo-600 hover:text-indigo-800 font-medium">
                                     Buka Google Maps &rarr;
                                 </a>
                             </div>
@@ -518,12 +394,12 @@
                 @if($assignment->reporter_id && Auth::id() !== $assignment->reporter_id)
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex items-center">
                         <div
-                            class="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold">
+                            class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">
                             {{ substr($assignment->reporter->name, 0, 2) }}
                         </div>
                         <div class="ml-3">
                             <p class="text-sm font-medium text-gray-900">{{ $assignment->reporter->name }}</p>
-                            <p class="text-xs text-gray-500">Wartawan Bertugas</p>
+                            <p class="text-xs text-gray-500">Reporter Bertugas</p>
                         </div>
                     </div>
                 @endif
@@ -544,44 +420,44 @@
                 @endif
 
                 {{-- FORM RESPON PEGAWAI (STAFF/ADMIN ONLY) --}}
-                <!-- @if(Auth::user()->hasAnyRole(['admin', 'editor', 'pegawai']) && ($assignment->status === 'submitted' || $assignment->status == 'completed'))
-                        <div class="bg-white rounded-2xl shadow-lg border border-indigo-100 overflow-hidden mt-6">
-                            <div class="bg-gradient-to-r from-slate-800 to-slate-900 px-6 py-3">
-                                <h3 class="text-white font-bold text-sm uppercase tracking-wider flex items-center">
-                                    <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                    </svg>
-                                    Aksi Pegawai / Editor
-                                </h3>
-                            </div>
-                            <div class="p-6">
-                                <form action="{{ route('assignments.respond', $assignment->id) }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="space-y-4">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Catatan / Respon</label>
-                                            <textarea name="staff_response_note" rows="3"
-                                                class="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                                                placeholder="Berikan catatan, revisi, atau feedback..."></textarea>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Upload File
-                                                (Revisi/Dokumen)</label>
-                                            <input type="file" name="staff_response_file"
-                                                class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 hover:cursor-pointer">
-                                            <p class="text-xs text-gray-500 mt-1">Opsional. PDF/Doc/Image</p>
-                                        </div>
-                                        <button type="submit"
-                                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-800 hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-colors">
-                                            Kirim Respon
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                @if(Auth::user()->hasAnyRole(['admin', 'editor', 'pegawai']) && ($assignment->status === 'submitted' || $assignment->status == 'completed'))
+                    <div class="bg-white rounded-2xl shadow-lg border border-indigo-100 overflow-hidden mt-6">
+                        <div class="bg-gradient-to-r from-slate-800 to-slate-900 px-6 py-3">
+                            <h3 class="text-white font-bold text-sm uppercase tracking-wider flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                                Aksi Pegawai / Editor
+                            </h3>
                         </div>
-                    @endif -->
+                        <div class="p-6">
+                            <form action="{{ route('assignments.respond', $assignment->id) }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Catatan / Respon</label>
+                                        <textarea name="staff_response_note" rows="3"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="Berikan catatan, revisi, atau feedback..."></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Upload File
+                                            (Revisi/Dokumen)</label>
+                                        <input type="file" name="staff_response_file"
+                                            class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 hover:cursor-pointer">
+                                        <p class="text-xs text-gray-500 mt-1">Opsional. PDF/Doc/Image</p>
+                                    </div>
+                                    <button type="submit"
+                                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-800 hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-colors">
+                                        Kirim Respon
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                @endif
             </div>
 
             {{-- Completion Modal --}}
@@ -620,7 +496,7 @@
                                             {{-- Upload Foto --}}
                                             <div>
                                                 <label class="block text-sm font-semibold text-gray-700 mb-2">1. Foto
-                                                    Cover Berita <span class="text-red-500">*</span></label>
+                                                    Dokumentasi <span class="text-red-500">*</span></label>
                                                 <div
                                                     class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md bg-gray-50 hover:bg-white transition-colors">
                                                     <div class="space-y-1 text-center">
@@ -633,7 +509,7 @@
                                                         </svg>
                                                         <div class="flex text-sm text-gray-600 justify-center">
                                                             <label for="evidence_photo"
-                                                                class="relative cursor-pointer bg-white rounded-md font-medium text-orange-600 hover:text-orange-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-orange-500">
+                                                                class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                                                                 <span>Upload Foto</span>
                                                                 <input id="evidence_photo" name="evidence_photo" type="file"
                                                                     class="sr-only" accept="image/*">
@@ -656,30 +532,26 @@
 
                                             {{-- Upload Document --}}
                                             <div>
-                                                <label class="block text-sm font-semibold text-gray-700 mb-2">2. Bahan Press
-                                                    Release (Dokumen)
-                                                    <span class="text-red-500">*</span></label>
-                                                <input type="file" name="evidence_document" {{ !$assignment->evidence_document ? 'required' : '' }}
+                                                <label class="block text-sm font-semibold text-gray-700 mb-2">2. Dokumen
+                                                    (Opsional)</label>
+                                                <input type="file" name="evidence_document"
                                                     class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors">
-                                                <p class="text-xs text-gray-500 mt-1">PDF, DOC, DOCX up to 10MB (Wajib)</p>
+                                                <p class="text-xs text-gray-500 mt-1">PDF, DOC, DOCX up to 10MB</p>
                                                 @if($assignment->evidence_document)
-                                                    <p class="text-xs text-green-600 mt-1"><i
-                                                            class="fas fa-check-circle mr-1"></i>Dokumen sudah ada. Upload baru
-                                                        untuk
-                                                        mengganti (opsional).</p>
+                                                    <p class="text-xs text-green-600 mt-1">Dokumen sudah ada. Upload baru untuk
+                                                        mengganti.</p>
                                                 @endif
                                             </div>
 
                                             {{-- Link --}}
                                             <div>
                                                 <label for="evidence_link"
-                                                    class="block text-sm font-medium text-gray-700 mb-1">3. Link Dokumentasi
-                                                    (Foto/Video)
-                                                </label>
+                                                    class="block text-sm font-medium text-gray-700 mb-1">3. Link Berita
+                                                    (Opsional)</label>
                                                 <input type="text" name="evidence_link" id="evidence_link"
                                                     value="{{ old('evidence_link', $assignment->evidence_link) }}"
-                                                    class="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                                                    placeholder="https://drive.google.com/...">
+                                                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                                    placeholder="https://...">
                                             </div>
                                         </div>
                                     </div>
@@ -692,7 +564,7 @@
                                 </button>
                                 <button type="button"
                                     onclick="document.getElementById('completion-modal').classList.add('hidden')"
-                                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                                     Batal
                                 </button>
                             </div>
@@ -700,79 +572,5 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Edit Publication Modal (For Admin/Editor) --}}
-            @if(($assignment->status === 'published' || $assignment->status === 'completed') && Auth::user()->hasRole(['admin', 'editor', 'direktur']))
-                <div id="edit-publication-modal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title"
-                    role="dialog" aria-modal="true">
-                    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"
-                            onclick="document.getElementById('edit-publication-modal').classList.add('hidden')"></div>
-                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                        <div
-                            class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                            <form action="{{ route('assignments.updateEvidence', $assignment->id) }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                    <div class="sm:flex sm:items-start">
-                                        <div
-                                            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                                            <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24"
-                                                stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                        </div>
-                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                                Edit Data Publikasi
-                                            </h3>
-                                            <div class="mt-2 text-sm text-gray-500">
-                                                Ubah link berita atau file press release final. Kosongkan jika tidak ingin
-                                                mengubah.
-                                            </div>
-
-                                            <div class="mt-4 space-y-4">
-                                                <div>
-                                                    <label class="block text-sm font-medium text-gray-700 mb-1">
-                                                        Link Berita Publish
-                                                    </label>
-                                                    <input type="url" name="evidence_link"
-                                                        value="{{ old('evidence_link', $assignment->evidence_link) }}"
-                                                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                                </div>
-
-                                                <div>
-                                                    <label class="block text-sm font-medium text-gray-700 mb-1">
-                                                        Update File Press Release (Final)
-                                                    </label>
-                                                    <input type="file" name="evidence_document" accept=".pdf,.doc,.docx"
-                                                        class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                                                    <p class="text-[10px] text-gray-500 mt-1">Upload file baru untuk
-                                                        menggantikan file sebelumnya.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                    <button type="submit"
-                                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                        Simpan Perubahan
-                                    </button>
-                                    <button type="button"
-                                        onclick="document.getElementById('edit-publication-modal').classList.add('hidden')"
-                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                                        Batal
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
         </div>
-    </div>
 @endsection

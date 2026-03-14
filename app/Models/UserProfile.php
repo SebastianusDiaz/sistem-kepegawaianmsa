@@ -13,13 +13,9 @@ class UserProfile extends Model
         'user_id',
         'nip',
         'phone',
-        'birth_place',
-        'birth_date',
-        'gender',
         'division_id',
         'position_id',
         'address',
-        'signature_path',
         'is_active',
     ];
 

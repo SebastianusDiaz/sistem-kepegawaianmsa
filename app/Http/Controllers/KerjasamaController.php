@@ -34,7 +34,7 @@ class KerjasamaController extends Controller
     public function create()
     {
         $employees = User::whereHas('roles', function ($q) {
-            $q->whereIn('name', ['admin', 'pegawai', 'wartawan', 'editor', 'direktur']);
+            $q->whereIn('name', ['admin', 'pegawai', 'wartawan', 'editor']);
         })->get();
 
         return view('kerjasama.create', compact('employees'));
@@ -63,7 +63,6 @@ class KerjasamaController extends Controller
             'pic_id'
         ]);
         $data['status'] = 'pending';
-        $data['created_by'] = Auth::id();
 
         // Handle file upload
         if ($request->hasFile('file')) {
@@ -89,15 +88,6 @@ class KerjasamaController extends Controller
 
     public function edit(Kerjasama $kerjasama)
     {
-        // Allow editing by unauthorized roles if they have access to the route (Middleware handles generally authenticated)
-        // Specific logic: Direktur can edit Pending. Admin/Direktur can edit Active.
-        // Wait, User said "Role lain masih dapat membuatnya".
-        // If I make it, can I edit it? Usually yes if it's draft/pending.
-        // Let's relax: Allow any auth user to edit if pending? Or just stick to "Direktur/Admin/Creator"?
-        // Simpler: Allow 'admin', 'direktur', 'pegawai', 'editor' for now as requested "Role lain masih dapat membuatnya".
-        // I will remove the specific checks and rely on standard auth/middleware or broad role check if needed.
-        // For now, removing the strict "Direktur" check.
-
         $employees = User::whereHas('roles', function ($q) {
             $q->whereIn('name', ['admin', 'pegawai', 'wartawan', 'editor']);
         })->get();

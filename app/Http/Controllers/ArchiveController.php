@@ -22,22 +22,12 @@ class ArchiveController extends Controller
      */
     public function index(Request $request)
     {
-        // Restrict access to Admin and Direktur
-        if (!Auth::user()->hasAnyRole(['admin', 'direktur'])) {
-            abort(403, 'Akses ditolak. Hanya Admin dan Direktur yang dapat mengakses halaman ini.');
-        }
-
         $query = FileArchive::with('user');
-
-        // Filter: Only show 'Assignment Document', 'Updated Press Release', 'Kerjasama Document', and 'Direct Upload'
-        $query->whereIn('source', ['Assignment Document', 'Updated Press Release', 'Kerjasama Document', 'Direct Upload']);
 
         if ($request->has('search')) {
             $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('original_name', 'like', "%{$search}%")
-                    ->orWhere('source', 'like', "%{$search}%");
-            });
+            $query->where('original_name', 'like', "%{$search}%")
+                ->orWhere('source', 'like', "%{$search}%");
         }
 
         $archives = $query->latest()->paginate(10);

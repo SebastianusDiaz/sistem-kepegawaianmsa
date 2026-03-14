@@ -12,12 +12,15 @@ class PositionSeeder extends Seeder
     {
         $positions = [
             'Staff',
+            'Senior Staff',
+            'Supervisor',
+            'Manager',
+            'General Manager',
             'Direktur',
-            'EditorLayout',
-            'EditorBerita',
-            'EditorFoto',
+            'Editor',
             'Wartawan',
-            'IT Support',
+            'Office Boy',
+            'Satpam'
         ];
 
         foreach ($positions as $pos) {

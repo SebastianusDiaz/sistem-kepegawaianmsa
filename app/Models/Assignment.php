@@ -61,14 +61,4 @@ class Assignment extends Model
     {
         return $this->hasMany(Absensi::class);
     }
-
-    public function discussions()
-    {
-        return $this->hasMany(AssignmentDiscussion::class)->orderBy('created_at', 'asc');
-    }
-
-    public function attachments()
-    {
-        return $this->hasMany(AssignmentAttachment::class)->latest();
-    }
 }

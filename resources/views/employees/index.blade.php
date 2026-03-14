@@ -13,8 +13,8 @@
             <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 {{-- Stat Card 1 --}}
                 <div class="bg-white overflow-hidden rounded-xl shadow-sm border border-gray-100 p-5 flex items-center">
-                    <div class="flex-shrink-0 bg-orange-50 rounded-lg p-3">
-                        <svg class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="flex-shrink-0 bg-indigo-50 rounded-lg p-3">
+                        <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     </div>
@@ -53,14 +53,14 @@
                         </svg>
                     </div>
                     <input type="text" name="search" value="{{ request('search') }}"
-                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-shadow"
+                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-shadow"
                         placeholder="Cari berdasarkan nama, email, atau NIP...">
                 </div>
                 
                 <div class="flex items-center space-x-4">
                     <div class="relative">
                         <select name="department" onchange="this.form.submit()" 
-                            class="appearance-none block w-full pl-3 pr-10 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 sm:text-sm cursor-pointer">
+                            class="appearance-none block w-full pl-3 pr-10 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm cursor-pointer">
                             <option value="">Semua Departemen</option>
                             @foreach($departments as $dept)
                                 <option value="{{ $dept }}" {{ request('department') == $dept ? 'selected' : '' }}>
@@ -112,7 +112,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10">
-                                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
                                                 <span class="text-white font-bold text-sm">
                                                     {{ strtoupper(substr($employee->name, 0, 2)) }}
                                                 </span>
@@ -148,7 +148,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('employees.show', $employee->id) }}" class="text-orange-600 hover:text-orange-900 font-medium">
+                                    <a href="{{ route('employees.show', $employee->id) }}" class="text-indigo-600 hover:text-indigo-900 font-medium">
                                         Detail
                                     </a>
                                 </td>

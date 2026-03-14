@@ -19,9 +19,9 @@ class AbsensiController extends Controller
         $this->archiveService = $archiveService;
     }
 
-    const OFFICE_LAT = -2.93641833;
-    const OFFICE_LNG = 104.72495176;
-    const OFFICE_GEOFENCE_RADIUS_METERS = 50;
+    const OFFICE_LAT = -6.175392;
+    const OFFICE_LNG = 106.827153;
+    const OFFICE_GEOFENCE_RADIUS_METERS = 30;
 
     /**
      * Display a listing of the resource.
@@ -29,8 +29,8 @@ class AbsensiController extends Controller
     public function index()
     {
         $user = Auth::user();
-
-        if ($user->hasRole(['admin', 'direktur']) && request('filter') !== 'mine') {
+        
+        if ($user->hasRole(['admin', 'direktur'])) {
             $absensis = Absensi::with('user', 'assignment')->latest()->get();
         } else {
             $absensis = Absensi::with('user', 'assignment')
@@ -110,7 +110,7 @@ class AbsensiController extends Controller
 
         // Common check for open attendance
         if ($this->hasOpenAttendance($user->id)) {
-            return back()->withErrors(['message' => 'Anda sudah Absen Masuk sebelumnya.']);
+            return back()->withErrors(['message' => 'Anda sudah check-in sebelumnya.']);
         }
 
         if ($request->attendance_type === 'field') {
@@ -189,7 +189,7 @@ class AbsensiController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Absen Masuk Berhasil');
+        return redirect()->back()->with('success', 'Check-in Berhasil');
     }
 
     /**
@@ -208,23 +208,17 @@ class AbsensiController extends Controller
             ->latest()
             ->first();
 
+        $checkInTime = Carbon::createFromFormat('H:i:s', $attendance->jam_masuk);
         $checkOutTime = Carbon::now();
-        $limitTime = Carbon::parse($attendance->tanggal . ' ' . $attendance->jam_masuk);
-
-        // Handle case where check-in might be interpreted as future if only time used (fixed by using date above)
-        // If check-out is technically 'before' check-in due to weird clock issues, ensure min 0
-        $mins = $limitTime->diffInMinutes($checkOutTime, false);
-        if ($mins < 0)
-            $mins = 0;
 
         $attendance->update([
             'jam_keluar' => $checkOutTime->toTimeString(),
             'status' => 'closed',
-            'worked_minutes' => $mins,
+            'worked_minutes' => $this->calculateWorkedMinutes($checkInTime, $checkOutTime),
             'note' => $attendance->note ? $attendance->note . ' | ' . $request->note : $request->note,
         ]);
 
-        return redirect()->back()->with('success', 'Absen Keluar Berhasil');
+        return redirect()->back()->with('success', 'Check-out Berhasil');
     }
 
     /**
@@ -288,10 +282,10 @@ class AbsensiController extends Controller
         $distance = $this->calculateDistance($lat, $lng, self::OFFICE_LAT, self::OFFICE_LNG);
 
         // Use accuracy to give some buffer, but strictly must be within range + accuracy check?
-        // User says: "accuracy <= 50m (office only)".
-        // And "Must be inside office geofence (<= 50m)".
+        // User says: "accuracy <= 100m (office only)".
+        // And "Must be inside office geofence (<= 100m)".
 
-        if ($accuracy > 250) {
+        if ($accuracy > 100) {
             return false;
         }
 

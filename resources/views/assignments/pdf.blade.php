@@ -109,55 +109,32 @@
 
     <table class="meta-info">
         <tr>
+            <td class="label">Nomor Surat</td>
+            <td>: #{{ substr($assignment->id, 0, 8) }}</td>
+        </tr>
+        <tr>
             <td class="label">Tanggal Cetak</td>
             <td>: {{ now()->translatedFormat('d F Y') }}</td>
         </tr>
         <tr>
             <td class="label">Perihal</td>
-            <td>: <strong>Penugasan Liputan Lapangan</strong></td>
+            <td>: Penugasan Liputan Lapangan</td>
         </tr>
-
+        <tr>
+            <td class="label">Status</td>
+            <td>
+                : <span class="status-badge">{{ $assignment->status }}</span>
+            </td>
+        </tr>
     </table>
 
     <div class="content">
         <p>Dengan ini redaksi memberikan tugas kepada wartawan di bawah ini:</p>
 
-        <table class="meta-info">
+        <table style="width: 100%; margin: 20px 0;">
             <tr>
                 <td class="label">Nama</td>
                 <td>: <strong>{{ $assignment->reporter->name ?? '-' }}</strong></td>
-            </tr>
-            <tr>
-                <td class="label">NIP</td>
-                <td>: {{ $assignment->reporter->profile->nip ?? '-' }}</td>
-            </tr>
-            <tr>
-                <td class="label">Jabatan</td>
-                <td>: {{ $assignment->reporter->profile->position->name ?? '-' }}</td>
-            </tr>
-            <tr>
-                <td class="label">Divisi</td>
-                <td>: {{ $assignment->reporter->profile->division->name ?? '-' }}</td>
-            </tr>
-            <tr>
-                <td class="label">Tempat, Tgl Lahir</td>
-                <td>: {{ $assignment->reporter->profile->birth_place ?? '-' }},
-                    {{ $assignment->reporter->profile->birth_date ? \Carbon\Carbon::parse($assignment->reporter->profile->birth_date)->translatedFormat('d F Y') : '-' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="label">Jenis Kelamin</td>
-                <td>:
-                    {{ $assignment->reporter->profile->gender === 'male' ? 'Laki-laki' : ($assignment->reporter->profile->gender === 'female' ? 'Perempuan' : '-') }}
-                </td>
-            </tr>
-            <tr>
-                <td class="label">Alamat</td>
-                <td>: {{ $assignment->reporter->profile->address ?? '-' }}</td>
-            </tr>
-            <tr>
-                <td class="label">No. Handphone</td>
-                <td>: {{ $assignment->reporter->profile->phone ?? '-' }}</td>
             </tr>
             <tr>
                 <td class="label">Email</td>
@@ -197,20 +174,9 @@
                 <div class="signature">
                     <p>Ditetapkan di Jakarta,</p>
                     <p>{{ now()->translatedFormat('d F Y') }}</p>
-
-                    <div style="height: 80px; margin-top: 20px; text-align: center;">
-                        @if($director && $director->profile && $director->profile->signature_path)
-                            <img src="{{ public_path('storage/' . $director->profile->signature_path) }}"
-                                style="height: 80px;">
-                        @else
-                            <div style="height: 80px;"></div>
-                        @endif
-                    </div>
-
-                    <div class="signature-line" style="margin-top: 5px;">
-                        <strong>{{ $director->name ?? 'Direktur Utama' }}</strong><br>
-                        <span
-                            style="font-weight: normal; font-size: 10pt;">{{ $director->profile->position->name ?? 'Direktur' }}</span>
+                    <br><br><br>
+                    <div class="signature-line">
+                        <strong>Redaktur Pelaksana</strong>
                     </div>
                 </div>
             </td>

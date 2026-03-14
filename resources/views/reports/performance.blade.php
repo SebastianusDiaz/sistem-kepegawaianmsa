@@ -7,9 +7,9 @@
 
         {{-- Header --}}
         <div class="mb-8">
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Laporan Kinerja</h1>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Laporan Kinerja Reporter</h1>
             <p class="mt-2 text-sm text-gray-500">
-                Laporan aktivitas dan kinerja Wartawan (Penugasan) dan Pegawai (Approval).
+                Laporan aktivitas dan penyelesaian tugas reporter berdasarkan periode.
             </p>
         </div>
 
@@ -22,19 +22,19 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Mulai Tanggal</label>
                     <input type="date" name="start_date" value="{{ $startDate }}"
-                        class="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                        class="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Sampai Tanggal</label>
                     <input type="date" name="end_date" value="{{ $endDate }}"
-                        class="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                        class="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 </div>
 
                 {{-- Division Filter --}}
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Divisi</label>
                     <select name="division_id"
-                        class="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+                        class="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         <option value="">Semua Divisi</option>
                         @foreach($divisions as $div)
                             <option value="{{ $div->id }}" {{ request('division_id') == $div->id ? 'selected' : '' }}>
@@ -46,7 +46,7 @@
 
                 <div>
                     <button type="submit"
-                        class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all">
+                        class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">
                         Terapkan Filter
                     </button>
                 </div>
@@ -63,7 +63,7 @@
 
             {{-- Completed --}}
             <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-gray-100 p-5">
-                <dt class="text-sm font-medium text-gray-500 truncate">Selesai / Disetujui</dt>
+                <dt class="text-sm font-medium text-gray-500 truncate">Selesai (Published)</dt>
                 <dd class="mt-1 text-3xl font-bold text-green-600">{{ $reportData->sum('completed') }}</dd>
             </div>
 
@@ -76,7 +76,7 @@
             {{-- Avg Rate --}}
             <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-gray-100 p-5">
                 <dt class="text-sm font-medium text-gray-500 truncate">Rata-rata Penyelesaian</dt>
-                <dd class="mt-1 text-3xl font-bold text-orange-600">
+                <dd class="mt-1 text-3xl font-bold text-indigo-600">
                     {{ $reportData->count() > 0 ? round($reportData->avg('rate'), 1) : 0 }}%
                 </dd>
             </div>
@@ -90,13 +90,13 @@
                         <tr>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Nama / Role</th>
+                                Reporter</th>
                             <th scope="col"
                                 class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Total Tugas</th>
                             <th scope="col"
                                 class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Selesai / Acc</th>
+                                Selesai</th>
                             <th scope="col"
                                 class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Proses</th>
@@ -115,19 +115,15 @@
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10">
                                             <div
-                                                class="h-10 w-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white font-bold text-sm">
+                                                class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
                                                 {{ substr($data->user->name, 0, 2) }}
                                             </div>
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-bold text-gray-900">{{ $data->user->name }}</div>
                                             <div class="text-xs text-gray-500">
-                                                <span
-                                                    class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium {{ $data->role_type == 'Wartawan' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
-                                                    {{ $data->role_type }}
-                                                </span>
-                                                <span class="text-gray-400 mx-1">|</span>
-                                                {{ $data->user->profile->division->name ?? '-' }}
+                                                {{ $data->user->profile->division->name ?? '-' }} |
+                                                {{ $data->user->profile->position->name ?? '-' }}
                                             </div>
                                         </div>
                                     </div>

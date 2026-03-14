@@ -16,27 +16,9 @@
                 </p>
             </div>
             <div class="mt-4 flex md:mt-0 md:ml-4">
-                <a href="{{ route('assignments.published') }}" 
-                   class="inline-flex items-center px-4 py-2 border border-green-200 rounded-lg shadow-sm text-sm font-medium text-green-700 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 mr-3">
-                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 011.414.586l5.414 5.414a1 1 0 01.586 1.414V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Lihat Berita Terbit
-                </a>
-
-                @if(Auth::user()->hasRole('wartawan'))
-                     <a href="{{ route('assignments.create') }}"
-                       class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
-                        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Buat Laporan Mandiri
-                    </a>
-                @endif
-
                 @if(!Auth::user()->hasRole('wartawan'))
                     <a href="{{ route('assignments.create') }}"
-                       class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200">
+                       class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
                         <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
@@ -146,7 +128,7 @@
                             </span>
                         </div>
 
-                        <a href="{{ route('assignments.show', $task->id) }}" class="block group-hover:text-orange-600 transition-colors">
+                        <a href="{{ route('assignments.show', $task->id) }}" class="block group-hover:text-indigo-600 transition-colors">
                             <h3 class="text-lg font-bold text-gray-900 leading-snug mb-2">
                                 {{ $task->title }}
                             </h3>
@@ -179,12 +161,12 @@
                         {{-- Reporter Info --}}
                         <div class="flex items-center">
                             @if($task->reporter)
-                                <div class="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xs ring-2 ring-white">
+                                <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs ring-2 ring-white">
                                     {{ substr($task->reporter->name, 0, 2) }}
                                 </div>
                                 <div class="ml-2 text-xs">
                                     <p class="text-gray-900 font-medium">{{ $task->reporter->name }}</p>
-                                    <p class="text-gray-400">Wartawan</p>
+                                    <p class="text-gray-400">Reporter</p>
                                 </div>
                             @else
                                 <div class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold text-xs ring-2 ring-white">
@@ -192,7 +174,7 @@
                                 </div>
                                 <div class="ml-2 text-xs">
                                     <p class="text-gray-900 font-medium italic">Belum Ada</p>
-                                    <p class="text-gray-400">Wartawan</p>
+                                    <p class="text-gray-400">Reporter</p>
                                 </div>
                             @endif
                         </div>
@@ -219,7 +201,7 @@
                     <p class="mt-1 text-sm text-gray-500">Mulai dengan membuat tugas liputan baru.</p>
                     @if(!Auth::user()->hasRole('wartawan'))
                         <div class="mt-6">
-                            <a href="{{ route('assignments.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-orange-700 bg-orange-100 hover:bg-orange-200">
+                            <a href="{{ route('assignments.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
                                 <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                                 </svg>

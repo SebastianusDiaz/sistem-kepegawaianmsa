@@ -15,7 +15,7 @@
         </nav>
 
         <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-            <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-orange-50 to-white">
+            <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-amber-50 to-white">
                 <h2 class="text-xl font-bold text-gray-900">Edit Kerjasama</h2>
                 <p class="text-sm text-gray-500 mt-1">Perbarui informasi perjanjian kerjasama.</p>
             </div>
@@ -34,21 +34,21 @@
                                     class="text-red-500">*</span></label>
                             <input type="text" name="company_name" id="company_name" required
                                 value="{{ old('company_name', $kerjasama->company_name) }}"
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm py-2.5">
+                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2.5">
                         </div>
                         <div class="sm:col-span-3">
                             <label for="start_date" class="block text-sm font-medium text-gray-700">Tanggal Mulai <span
                                     class="text-red-500">*</span></label>
                             <input type="date" name="start_date" id="start_date" required
                                 value="{{ old('start_date', $kerjasama->start_date->format('Y-m-d')) }}"
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm py-2.5">
+                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2.5">
                         </div>
                         <div class="sm:col-span-3">
                             <label for="end_date" class="block text-sm font-medium text-gray-700">Tanggal Berakhir <span
                                     class="text-red-500">*</span></label>
                             <input type="date" name="end_date" id="end_date" required
                                 value="{{ old('end_date', $kerjasama->end_date->format('Y-m-d')) }}"
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm py-2.5">
+                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2.5">
                         </div>
                     </div>
                 </div>
@@ -56,30 +56,28 @@
                 <hr class="border-gray-100">
 
                 {{-- Section 2: Representative --}}
-                <div class="bg-orange-50 rounded-xl p-5 border border-orange-100">
-                    <h3 class="text-base font-semibold text-orange-900 mb-4">Perwakilan Perusahaan</h3>
+                <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                    <h3 class="text-base font-semibold text-blue-900 mb-4">Perwakilan Perusahaan</h3>
                     <div class="grid grid-cols-1 gap-y-5 gap-x-6 sm:grid-cols-6">
                         <div class="sm:col-span-6">
-                            <label for="representative_name" class="block text-sm font-medium text-orange-800">Nama
-                                Perwakilan
+                            <label for="representative_name" class="block text-sm font-medium text-blue-800">Nama Perwakilan
                                 <span class="text-red-500">*</span></label>
                             <input type="text" name="representative_name" id="representative_name" required
                                 value="{{ old('representative_name', $kerjasama->representative_name) }}"
-                                class="mt-1 block w-full rounded-lg border-orange-200 shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm py-2.5">
+                                class="mt-1 block w-full rounded-lg border-blue-200 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2.5">
                         </div>
                         <div class="sm:col-span-3">
-                            <label for="representative_phone" class="block text-sm font-medium text-orange-800">Nomor
+                            <label for="representative_phone" class="block text-sm font-medium text-blue-800">Nomor
                                 Telepon</label>
                             <input type="text" name="representative_phone" id="representative_phone"
                                 value="{{ old('representative_phone', $kerjasama->representative_phone) }}"
-                                class="mt-1 block w-full rounded-lg border-orange-200 shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm py-2.5">
+                                class="mt-1 block w-full rounded-lg border-blue-200 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2.5">
                         </div>
                         <div class="sm:col-span-3">
-                            <label for="representative_email"
-                                class="block text-sm font-medium text-orange-800">Email</label>
+                            <label for="representative_email" class="block text-sm font-medium text-blue-800">Email</label>
                             <input type="email" name="representative_email" id="representative_email"
                                 value="{{ old('representative_email', $kerjasama->representative_email) }}"
-                                class="mt-1 block w-full rounded-lg border-orange-200 shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm py-2.5">
+                                class="mt-1 block w-full rounded-lg border-blue-200 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2.5">
                         </div>
                     </div>
                 </div>
@@ -92,7 +90,7 @@
                             <label for="pic_id" class="block text-sm font-medium text-gray-700">Pilih Karyawan (PIC) <span
                                     class="text-red-500">*</span></label>
                             <select name="pic_id" id="pic_id" required
-                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm py-2.5">
+                                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2.5">
                                 @foreach($employees as $e)
                                     <option value="{{ $e->id }}" {{ old('pic_id', $kerjasama->pic_id) == $e->id ? 'selected' : '' }}>{{ $e->name }}</option>
                                 @endforeach
@@ -101,8 +99,10 @@
                         <div class="sm:col-span-3">
                             <label for="file" class="block text-sm font-medium text-gray-700">Dokumen MoU (Opsional)</label>
                             <input type="file" name="file" id="file" accept=".pdf,.doc,.docx"
-                                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
-
+                                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            @if($kerjasama->file_path)
+                                <p class="mt-1 text-xs text-green-600">Dokumen sudah ada. Upload baru untuk mengganti.</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                         Batal
                     </a>
                     <button type="submit"
-                        class="px-6 py-2.5 bg-orange-600 border border-transparent rounded-lg text-sm font-medium text-white shadow-sm hover:bg-orange-700 transition-all">
+                        class="px-6 py-2.5 bg-indigo-600 border border-transparent rounded-lg text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-all">
                         Simpan Perubahan
                     </button>
                 </div>

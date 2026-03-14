@@ -38,7 +38,7 @@
                 <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-100 bg-gray-50/50">
                         <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
-                            <svg class="h-5 w-5 text-orange-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="h-5 w-5 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                             </svg>
@@ -53,7 +53,7 @@
                                 <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
                                 <div class="mt-1">
                                     <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
-                                        class="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
                                     @error('name')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -66,7 +66,7 @@
                                 <div class="mt-1">
                                     <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
                                         required
-                                        class="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
                                     @error('email')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -78,7 +78,7 @@
                                 <label for="is_active" class="block text-sm font-medium text-gray-700">Status Akun</label>
                                 <div class="mt-1">
                                     <select name="is_active" id="is_active"
-                                        class="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5 max-w-xs">
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5 max-w-xs">
                                         <option value="1" {{ old('is_active', $user->is_active) == 1 ? 'selected' : '' }}>
                                             Aktif</option>
                                         <option value="0" {{ old('is_active', $user->is_active) == 0 ? 'selected' : '' }}>
@@ -118,23 +118,23 @@
 
                                             {{-- Card --}}
                                             <div
-                                                class="h-full p-4 rounded-xl border-2 border-gray-200 hover:border-orange-200 transition-all duration-200 peer-checked:border-orange-600 peer-checked:bg-orange-50 peer-checked:shadow-sm">
+                                                class="h-full p-4 rounded-xl border-2 border-gray-200 hover:border-indigo-200 transition-all duration-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:shadow-sm">
                                                 <div class="flex flex-col items-center text-center space-y-2">
                                                     <div
-                                                        class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 peer-checked:bg-orange-200 peer-checked:text-orange-700 transition-colors">
+                                                        class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 peer-checked:bg-indigo-200 peer-checked:text-indigo-700 transition-colors">
                                                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke="currentColor">
                                                             {!! $icon !!}
                                                         </svg>
                                                     </div>
                                                     <span
-                                                        class="font-bold text-gray-700 peer-checked:text-orange-900 capitalize block">
+                                                        class="font-bold text-gray-700 peer-checked:text-indigo-900 capitalize block">
                                                         {{ ucfirst($role) }}
                                                     </span>
                                                 </div>
                                                 {{-- Checkmark Icon --}}
                                                 <div
-                                                    class="absolute top-3 right-3 text-orange-600 opacity-0 peer-checked:opacity-100 transition-opacity">
+                                                    class="absolute top-3 right-3 text-indigo-600 opacity-0 peer-checked:opacity-100 transition-opacity">
                                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd"
                                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -181,7 +181,7 @@
                 <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-100 bg-gray-50/50">
                         <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
-                            <svg class="h-5 w-5 text-orange-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="h-5 w-5 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
                             </svg>
@@ -197,7 +197,7 @@
                                     Departemen</label>
                                 <div class="mt-1">
                                     <select name="division_id" id="division_id" required
-                                        class="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
                                         <option value="">-- Pilih Divisi --</option>
                                         @foreach($divisions as $div)
                                             <option value="{{ $div->id }}" {{ old('division_id', $user->profile?->division_id) == $div->id ? 'selected' : '' }}>
@@ -216,7 +216,7 @@
                                 <label for="position_id" class="block text-sm font-medium text-gray-700">Jabatan</label>
                                 <div class="mt-1">
                                     <select name="position_id" id="position_id" required
-                                        class="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
                                         <option value="">-- Pilih Jabatan --</option>
                                         @foreach($positions as $pos)
                                             <option value="{{ $pos->id }}" {{ old('position_id', $user->profile?->position_id) == $pos->id ? 'selected' : '' }}>
@@ -235,7 +235,7 @@
                                 <label for="nip" class="block text-sm font-medium text-gray-700">NIP</label>
                                 <div class="mt-1">
                                     <input type="text" name="nip" id="nip" value="{{ old('nip', $user->profile?->nip) }}"
-                                        class="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
                                     @error('nip')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -248,7 +248,7 @@
                                 <div class="mt-1">
                                     <input type="text" name="phone" id="phone"
                                         value="{{ old('phone', $user->profile?->phone) }}"
-                                        class="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
                                     @error('phone')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -260,7 +260,7 @@
                                 <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
                                 <div class="mt-1">
                                     <textarea name="address" id="address" rows="3"
-                                        class="shadow-sm focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-lg">{{ old('address', $user->profile?->address) }}</textarea>
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg">{{ old('address', $user->profile?->address) }}</textarea>
                                     @error('address')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -277,7 +277,7 @@
                         Batal
                     </a>
                     <button type="submit"
-                        class="inline-flex justify-center rounded-lg border border-transparent bg-orange-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all transform hover:-translate-y-0.5">
+                        class="inline-flex justify-center rounded-lg border border-transparent bg-indigo-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all transform hover:-translate-y-0.5">
                         Simpan Perubahan
                     </button>
                 </div>

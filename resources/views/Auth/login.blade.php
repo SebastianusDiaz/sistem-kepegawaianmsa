@@ -16,7 +16,7 @@
             class="hidden md:flex md:w-1/2 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-700 justify-center items-center p-8">
             <div class="text-center text-white">
                 <h1 class="text-4xl font-bold mb-4">Welcome Back</h1>
-                <p class="text-lg text-orange-100">Sign in to access your account</p>
+                <p class="text-lg text-blue-100">Sign in to access your account</p>
                 <h2 class="text-2xl font-semibold mt-4">Sistem Informasi Kepegawaian PT. Media Sriwijaya Anugrah</h2>
             </div>
         </div>
