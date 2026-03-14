@@ -26,11 +26,11 @@
                 {{-- Header Card --}}
                 <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                     <div
-                        class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white">
+                        class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-orange-500 to-orange-600 text-white">
                         <div class="flex items-center justify-between">
                             <div>
                                 <h1 class="text-2xl font-bold">{{ $kerjasama->company_name }}</h1>
-                                <p class="text-indigo-100 text-sm mt-1">Kerjasama (MoU)</p>
+                                <p class="text-orange-100 text-sm mt-1">Kerjasama (MoU)</p>
                             </div>
                             @php
                                 $statusColors = [
@@ -50,7 +50,7 @@
                     <div class="p-6 space-y-6">
                         {{-- Periode --}}
                         <div class="flex items-center text-gray-600">
-                            <svg class="w-5 h-5 mr-3 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="w-5 h-5 mr-3 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
@@ -59,14 +59,14 @@
                         </div>
 
                         {{-- Representative Box --}}
-                        <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
-                            <h4 class="text-sm font-semibold text-blue-900 mb-3">Perwakilan Perusahaan</h4>
-                            <p class="text-sm text-blue-800 font-medium">{{ $kerjasama->representative_name }}</p>
+                        <div class="bg-orange-50 rounded-xl p-4 border border-orange-100">
+                            <h4 class="text-sm font-semibold text-orange-900 mb-3">Perwakilan Perusahaan</h4>
+                            <p class="text-sm text-orange-800 font-medium">{{ $kerjasama->representative_name }}</p>
                             @if($kerjasama->representative_phone)
-                                <p class="text-xs text-blue-600 mt-1">📞 {{ $kerjasama->representative_phone }}</p>
+                                <p class="text-xs text-orange-600 mt-1">📞 {{ $kerjasama->representative_phone }}</p>
                             @endif
                             @if($kerjasama->representative_email)
-                                <p class="text-xs text-blue-600">✉️ {{ $kerjasama->representative_email }}</p>
+                                <p class="text-xs text-orange-600">✉️ {{ $kerjasama->representative_email }}</p>
                             @endif
                         </div>
 
@@ -79,10 +79,11 @@
 
                         {{-- File --}}
                         @if($kerjasama->file_path)
+                            @role('direktur')
                             <div>
                                 <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Dokumen MoU</h4>
                                 <a href="{{ asset('storage/' . $kerjasama->file_path) }}" target="_blank"
-                                    class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium text-sm">
+                                    class="inline-flex items-center text-orange-600 hover:text-orange-800 font-medium text-sm">
                                     <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -90,6 +91,13 @@
                                     Download Dokumen
                                 </a>
                             </div>
+                            @endrole
+                            @if(!Auth::user()->hasRole('direktur'))
+                                <div>
+                                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Dokumen MoU</h4>
+                                    <span class="text-sm text-gray-400 italic"><i class="fas fa-lock mr-1"></i> (Restricted)</span>
+                                </div>
+                            @endif
                         @endif
 
                         {{-- Rejection Note --}}
@@ -112,7 +120,7 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Judul</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Reporter
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Wartawan
                                     </th>
                                     <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Status
                                     </th>
@@ -127,11 +135,11 @@
                                         <td class="px-6 py-4 text-sm text-gray-600">{{ $a->reporter->name ?? 'N/A' }}</td>
                                         <td class="px-6 py-4 text-center">
                                             <span
-                                                class="px-2 py-1 text-xs font-bold rounded-full bg-indigo-100 text-indigo-800">{{ ucfirst($a->status) }}</span>
+                                                class="px-2 py-1 text-xs font-bold rounded-full bg-orange-100 text-orange-800">{{ ucfirst($a->status) }}</span>
                                         </td>
                                         <td class="px-6 py-4 text-center">
                                             <a href="{{ route('assignments.show', $a) }}"
-                                                class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">Lihat</a>
+                                                class="text-orange-600 hover:text-orange-900 text-sm font-medium">Lihat</a>
                                         </td>
                                     </tr>
                                 @empty
@@ -152,14 +160,26 @@
                 <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 space-y-4">
                     <h3 class="text-lg font-bold text-gray-900 mb-2">Aksi</h3>
 
-                    <a href="{{ route('kerjasama.edit', $kerjasama) }}"
-                        class="w-full flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-                        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        Edit Kerjasama
-                    </a>
+                    @php
+                        $canEdit = Auth::user()->hasRole('direktur') || Auth::id() == $kerjasama->created_by;
+
+                        // Maintain existing restriction for 'active' status if desired, or just allow all?
+                        // User request: "hanya pembuat dan direktur yang bisa mengedit" (Only Creator and Director can edit).
+                        // It implies broad permission. I will use the broad permission to match Index.
+                        // However, commonly we don't edit rejected/expired? 
+                        // I'll leave it broad as per request.
+                    @endphp
+
+                    @if($canEdit)
+                        <a href="{{ route('kerjasama.edit', $kerjasama) }}"
+                            class="w-full flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Edit Kerjasama
+                        </a>
+                    @endif
 
                     @role('direktur')
                     @if($kerjasama->status === 'pending')
