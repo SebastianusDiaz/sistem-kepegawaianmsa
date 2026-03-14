@@ -10,7 +10,7 @@ class DivisionSeeder extends Seeder
 {
     public function run(): void
     {
-        $divisions = ['Redaksi', 'IT', 'HRD', 'Management', 'Finance', 'General Affairs'];
+        $divisions = ['Redaksi', 'IT', 'Editorial','Direktur'];
 
         foreach ($divisions as $div) {
             Division::firstOrCreate(

@@ -19,12 +19,12 @@
                         @if($hasOpenAttendance)
                             <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-800 shadow-sm border border-green-200">
                                 <span class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                                Sedang Check-In
+                                Sedang Absen Masuk
                             </span>
                         @else
                             <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 text-gray-800 shadow-sm border border-gray-200">
                                 <span class="w-3 h-3 bg-gray-400 rounded-full mr-2"></span>
-                                Belum Check-In
+                                Belum Absen Masuk
                             </span>
                         @endif
                     </div>
@@ -55,10 +55,10 @@
                             @csrf
                             <div class="mb-4">
                                 <label for="note" class="sr-only">Catatan</label>
-                                <textarea name="note" rows="2" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Catatan aktivitas hari ini..."></textarea>
+                                <textarea name="note" rows="2" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm" placeholder="Catatan aktivitas hari ini..."></textarea>
                             </div>
                             <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all transform hover:scale-105">
-                                Check Out Sekarang
+                                Absen Keluar Sekarang
                             </button>
                         </form>
                     @else
@@ -70,7 +70,10 @@
                             <input type="hidden" name="accuracy" id="accuracy">
 
                             <!-- Type Toggle -->
-                            <div class="flex rounded-lg bg-gray-200 p-1 mb-4">
+                            @php
+                                $isPureWartawan = auth()->user()->hasRole('wartawan') && !auth()->user()->hasAnyRole(['admin', 'pegawai', 'direktur']);
+                            @endphp
+                            <div class="{{ $isPureWartawan ? 'hidden' : 'flex' }} rounded-lg bg-gray-200 p-1 mb-4">
                                 <button type="button" class="flex-1 py-1.5 text-sm font-medium rounded-md shadow-sm bg-white text-gray-900 transition-colors" id="btn-office" onclick="setAttendanceType('office')">
                                     Kantor
                                 </button>
@@ -78,10 +81,10 @@
                                     Lapangan
                                 </button>
                             </div>
-                            <input type="hidden" name="attendance_type" id="attendance_type" value="office">
+                            <input type="hidden" name="attendance_type" id="attendance_type" value="{{ $isPureWartawan ? 'field' : 'office' }}">
 
-                            <!-- Field Assignment Dropdown (Hidden by default) -->
-                            <div id="field-options" class="hidden mb-4 space-y-3">
+                            <!-- Field Assignment Dropdown (Hidden by default for non-wartawan) -->
+                            <div id="field-options" class="{{ $isPureWartawan ? 'mb-4 space-y-3' : 'hidden mb-4 space-y-3' }}">
                                 <div class="p-3 bg-blue-50 text-blue-800 rounded-lg text-xs leading-5">
                                     <span class="font-bold block mb-1">Mode Lapangan</span>
                                     Absensi lapangan tidak dibatasi geofence kantor.
@@ -90,7 +93,7 @@
                                 {{-- Sub-Mode Selector --}}
                                 <div class="flex space-x-2 mb-2">
                                     <button type="button" id="field-mode-assignment" onclick="setFieldMode('selection')"
-                                        class="flex-1 py-1 px-2 text-xs font-medium rounded border border-indigo-200 bg-indigo-100 text-indigo-700 hover:bg-indigo-200">
+                                        class="flex-1 py-1 px-2 text-xs font-medium rounded border border-orange-200 bg-orange-100 text-orange-700 hover:bg-orange-200">
                                         Pilih Surat Tugas
                                     </button>
                                     <button type="button" id="field-mode-manual" onclick="setFieldMode('manual')"
@@ -102,7 +105,7 @@
                                 {{-- Input 1: Selection --}}
                                 <div id="assignment_selector">
                                     <label for="assignment_id" class="block text-sm font-medium text-gray-700">Pilih Surat Tugas / Assignment</label>
-                                    <select name="assignment_id" id="assignment_id" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                    <select name="assignment_id" id="assignment_id" {{ $isPureWartawan ? 'required' : '' }} class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md">
                                         <option value="">-- Pilih Assignment --</option>
                                         @foreach($activeAssignments as $assignment)
                                             <option value="{{ $assignment->id }}">{{ $assignment->title }} ({{ $assignment->letter_number }})</option>
@@ -114,18 +117,18 @@
                                 <div id="manual_input_container" class="hidden">
                                      <label for="manual_assignment" class="block text-sm font-medium text-gray-700">Upload Bukti Surat Tugas</label>
                                      <input type="file" name="manual_assignment" id="manual_assignment" accept="image/*,.pdf"
-                                        class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                        class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
                                      <p class="mt-1 text-xs text-gray-500">Foto atau PDF. Maksimal 5MB.</p>
                                 </div>
                             </div>
 
-                            <!-- Office Info (Visible by default) -->
-                            <div id="office-options" class="mb-4">
-                                <div class="p-3 bg-indigo-50 text-indigo-800 rounded-lg text-xs leading-5 flex items-start">
+                            <!-- Office Info (Visible by default only for non-wartawan) -->
+                            <div id="office-options" class="{{ $isPureWartawan ? 'hidden mb-4' : 'mb-4' }}">
+                                <div class="p-3 bg-orange-50 text-orange-800 rounded-lg text-xs leading-5 flex items-start">
                                     <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                                     <div>
                                         <span class="font-bold block mb-1">Mode Kantor</span>
-                                        Anda wajib berada di area kantor (Radius 100m). Lokasi Anda akan dideteksi otomatis.
+                                        Anda wajib berada di area kantor. Lokasi Anda akan dideteksi otomatis.
                                     </div>
                                 </div>
                                 <div id="location-status" class="mt-2 text-xs text-gray-500 italic flex items-center">
@@ -135,7 +138,7 @@
                             </div>
 
                             <button type="submit" id="btn-submit-checkin" disabled class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-gray-400 cursor-not-allowed transition-all">
-                                Check In Masuk
+                                Absen Masuk
                             </button>
                         </form>
                     @endif
@@ -153,33 +156,29 @@
                 @role('admin')
                 <div class="flex items-center space-x-2 mr-2">
                     <a href="{{ route('absensi.index', ['filter' => 'mine']) }}" 
-                       class="px-3 py-2 text-sm font-medium rounded-md {{ request('filter') === 'mine' ? 'bg-indigo-100 text-indigo-700' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100' }}">
+                       class="px-3 py-2 text-sm font-medium rounded-md {{ request('filter') === 'mine' ? 'bg-orange-100 text-orange-700' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100' }}">
                        Absensi Saya
                     </a>
                     <a href="{{ route('absensi.index') }}" 
-                       class="px-3 py-2 text-sm font-medium rounded-md {{ !request('filter') ? 'bg-indigo-100 text-indigo-700' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100' }}">
+                       class="px-3 py-2 text-sm font-medium rounded-md {{ !request('filter') ? 'bg-orange-100 text-orange-700' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100' }}">
                        Semua Data
                     </a>
                 </div>
                 
-                <a href="{{ route('absensi.create') }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    Manual Entry
-                </a>
                 @endrole
             </div>
         </div>
         
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-indigo-50">
+                <thead class="bg-orange-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-bold text-indigo-800 uppercase tracking-wider">Pegawai</th>
-                        <th class="px-6 py-3 text-left text-xs font-bold text-indigo-800 uppercase tracking-wider">Tanggal & Waktu</th>
-                        <th class="px-6 py-3 text-left text-xs font-bold text-indigo-800 uppercase tracking-wider">Tipe</th>
-                        <th class="px-6 py-3 text-left text-xs font-bold text-indigo-800 uppercase tracking-wider">Durasi</th>
-                        <th class="px-6 py-3 text-left text-xs font-bold text-indigo-800 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-center text-xs font-bold text-indigo-800 uppercase tracking-wider">Keterangan</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-orange-800 uppercase tracking-wider">Pegawai</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-orange-800 uppercase tracking-wider">Tanggal & Waktu</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-orange-800 uppercase tracking-wider">Tipe</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-orange-800 uppercase tracking-wider">Durasi</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-orange-800 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-center text-xs font-bold text-orange-800 uppercase tracking-wider">Keterangan</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -187,7 +186,7 @@
                     <tr class="hover:bg-gray-50 transition-colors">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold text-sm">
+                                <div class="flex-shrink-0 h-10 w-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold text-sm">
                                     {{ substr($a->user->name, 0, 2) }}
                                 </div>
                                 <div class="ml-4">
@@ -234,7 +233,7 @@
                                 ];
                                 $legacy_colors = [
                                     'hadir' => 'bg-green-50 text-green-600',
-                                    'izin' => 'bg-indigo-50 text-indigo-600',
+                                    'izin' => 'bg-orange-50 text-orange-600',
                                     'sakit' => 'bg-pink-50 text-pink-600',
                                     'alpha' => 'bg-red-50 text-red-600',
                                 ];
@@ -265,10 +264,10 @@
 
                            @role('admin')
                            <div class="mt-2 flex justify-center space-x-2">
-                                <a href="{{ route('absensi.edit', $a->id) }}" class="text-indigo-600 hover:text-indigo-900 text-xs">Edit</a>
-                                <form action="{{ route('absensi.destroy', $a->id) }}" method="POST" onsubmit="return confirm('Hapus absensi ini?');">
+                                <a href="{{ route('absensi.edit', $a->id) }}" class="text-orange-600 hover:text-orange-900 text-xs">Edit</a>
+                                <form action="{{ route('absensi.destroy', $a->id) }}" method="POST">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900 text-xs bg-transparent border-0 cursor-pointer">Hapus</button>
+                                    <button type="submit" data-confirm="Yakin ingin menghapus absensi ini?" class="text-red-600 hover:text-red-900 text-xs bg-transparent border-0 cursor-pointer">Hapus</button>
                                 </form>
                            </div>
                            @endrole
@@ -350,8 +349,8 @@
 
     function setFieldMode(mode) {
         if (mode === 'selection') {
-            fieldModeAssignment.classList.add('bg-indigo-100', 'text-indigo-700', 'border-indigo-200');
-            fieldModeManual.classList.remove('bg-indigo-100', 'text-indigo-700', 'border-indigo-200');
+            fieldModeAssignment.classList.add('bg-orange-100', 'text-orange-700', 'border-orange-200');
+            fieldModeManual.classList.remove('bg-orange-100', 'text-orange-700', 'border-orange-200');
             
             inputAssignmentSelect.classList.remove('hidden');
             inputManualText.classList.add('hidden');
@@ -362,8 +361,8 @@
             manualInput.value = "";
 
         } else {
-            fieldModeManual.classList.add('bg-indigo-100', 'text-indigo-700', 'border-indigo-200');
-            fieldModeAssignment.classList.remove('bg-indigo-100', 'text-indigo-700', 'border-indigo-200');
+            fieldModeManual.classList.add('bg-orange-100', 'text-orange-700', 'border-orange-200');
+            fieldModeAssignment.classList.remove('bg-orange-100', 'text-orange-700', 'border-orange-200');
             
             inputManualText.classList.remove('hidden');
             inputAssignmentSelect.classList.add('hidden');
@@ -380,25 +379,97 @@
     const accInput = document.getElementById('accuracy');
     const locStatus = document.getElementById('location-status');
     const locSpinner = document.getElementById('loc-spinner');
+    
+    let watchId = null;
+    let bestAccuracy = Infinity;
+    let sampleCount = 0;
+    let startTime = null;
+    let autoRetryTimer = null;
+    let lastAccuracyImprovement = null;
+
+    const MAX_ACCURACY_OFFICE = 250; // Increased to 250m for Laptop/WiFi support
+    const AUTO_RETRY_INTERVAL = 8000; // Retry every 8 seconds if no improvement
+    let locationAccuracyOk = false;
 
     function getLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, showError, {
+            // ... (rest of function same as before, no changes needed here) ...
+            // Clear existing watch and timers
+            if (watchId !== null) {
+                navigator.geolocation.clearWatch(watchId);
+            }
+            if (autoRetryTimer !== null) {
+                clearInterval(autoRetryTimer);
+            }
+            
+            // Reset state
+            bestAccuracy = Infinity;
+            sampleCount = 0;
+            startTime = Date.now();
+            lastAccuracyImprovement = Date.now();
+            locationAccuracyOk = false;
+            
+            locStatus.innerHTML = "<div class='flex items-center'><svg class='w-4 h-4 mr-2 animate-spin' fill='none' viewBox='0 0 24 24'><circle class='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' stroke-width='4'></circle><path class='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path></svg><span>Mencari sinyal GPS...</span></div>";
+            
+            watchId = navigator.geolocation.watchPosition(showPosition, showError, {
                 enableHighAccuracy: true,
-                timeout: 5000,
+                timeout: 30000, // Increased to 30 seconds
                 maximumAge: 0
             });
+            
+            // Auto-retry mechanism
+            autoRetryTimer = setInterval(function() {
+                const timeSinceImprovement = Date.now() - lastAccuracyImprovement;
+                if (timeSinceImprovement > AUTO_RETRY_INTERVAL && bestAccuracy > MAX_ACCURACY_OFFICE) {
+                    console.log('GPS: No improvement for 8s, restarting watch...');
+                    if (watchId !== null) {
+                        navigator.geolocation.clearWatch(watchId);
+                    }
+                    watchId = navigator.geolocation.watchPosition(showPosition, showError, {
+                        enableHighAccuracy: true,
+                        timeout: 30000,
+                        maximumAge: 0
+                    });
+                    lastAccuracyImprovement = Date.now();
+                    sampleCount = 0;
+                    locStatus.innerHTML = "<div class='flex items-center text-orange-600'><svg class='w-4 h-4 mr-2 animate-spin' fill='none' viewBox='0 0 24 24'><circle class='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' stroke-width='4'></circle><path class='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path></svg><span>Mencoba ulang... (Akurasi terakhir: " + bestAccuracy + "m)</span></div>";
+                }
+            }, AUTO_RETRY_INTERVAL);
         } else {
-            locStatus.innerHTML = "<span class='text-red-600'>Geolocation not supported by this browser.</span>";
+             locStatus.innerHTML = "<span class='text-red-600'>Browser tidak mendukung geolokasi.</span>";
         }
     }
 
     function showPosition(position) {
+        const currentAccuracy = Math.round(position.coords.accuracy);
+        sampleCount++;
+        
+        // Update input values
         latInput.value = position.coords.latitude;
         lngInput.value = position.coords.longitude;
-        accInput.value = position.coords.accuracy;
+        accInput.value = currentAccuracy;
 
-        locStatus.innerHTML = "<span class='text-green-600 flex items-center'><svg class='w-4 h-4 mr-1' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg> Lokasi ditemukan (Akurasi: " + Math.round(position.coords.accuracy) + "m)</span>";
+        // Track best accuracy
+        if (currentAccuracy < bestAccuracy) {
+            bestAccuracy = currentAccuracy;
+            lastAccuracyImprovement = Date.now();
+        }
+        
+        const elapsedSeconds = Math.round((Date.now() - startTime) / 1000);
+
+        // Always accept location regarding accuracy
+        locationAccuracyOk = true;
+        
+        // Stop auto-retry since we accept any result
+        if (autoRetryTimer !== null) {
+            clearInterval(autoRetryTimer);
+            autoRetryTimer = null;
+        }
+
+        locStatus.innerHTML = "<div class='flex items-center text-green-600'>" +
+            "<svg class='w-5 h-5 mr-1' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>" +
+            "<span>Lokasi terkunci!</span>" +
+        "</div>";
         
         validateForm();
     }
@@ -407,33 +478,50 @@
         let msg = "";
         switch(error.code) {
             case error.PERMISSION_DENIED:
-                msg = "Anda menolak permintaan lokasi.";
+                msg = "Anda menolak permintaan lokasi. Silakan izinkan akses lokasi di pengaturan browser.";
                 break;
             case error.POSITION_UNAVAILABLE:
-                msg = "Informasi lokasi tidak tersedia.";
+                msg = "Lokasi tidak tersedia. Pastikan GPS aktif.";
                 break;
             case error.TIMEOUT:
-                msg = "Waktu permintaan lokasi habis.";
+                // For watchPosition, just ignore timeout if we have any data
+                if (bestAccuracy !== Infinity) return; 
+                msg = "Timeout. Pastikan GPS aktif dan coba di area terbuka.";
                 break;
             case error.UNKNOWN_ERROR:
                 msg = "Terjadi kesalahan yang tidak diketahui.";
                 break;
         }
-        locStatus.innerHTML = "<span class='text-red-600'>" + msg + "</span>";
-        // Retry logic or blocking could be here
-        validateForm();
+        
+        // Only show error if it's critical or we have no data at all
+        if (error.code === error.PERMISSION_DENIED || bestAccuracy === Infinity) {
+            locationAccuracyOk = false;
+            locStatus.innerHTML = "<div class='text-red-600'>" + 
+                "<div class='flex items-center'>" +
+                    "<svg class='w-4 h-4 mr-1' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'></path></svg>" +
+                    "<span>" + msg + "</span>" +
+                "</div>" +
+                "<button type='button' onclick='retryLocation()' class='mt-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700'>Coba Lagi</button>" +
+            "</div>";
+            validateForm();
+        }
+    }
+
+    function retryLocation() {
+        getLocation();
     }
 
     function validateForm() {
         let isValid = false;
         
         if (inputType.value === 'office') {
-            if (latInput.value && lngInput.value) {
+            // Office mode requires location AND accuracy <= 50m
+            if (latInput.value && lngInput.value && locationAccuracyOk) {
                 isValid = true;
             }
         } else {
             // Field - HTML5 required attribute handles validation for inputs
-            // We just ensure location is present for safer measure (though some field ops might not need it? controller enforces it for manual)
+            // We just ensure location is present for safer measure
             if (latInput.value && lngInput.value) {
                 isValid = true;
             }
@@ -442,11 +530,11 @@
         if (isValid) {
             btnSubmit.disabled = false;
             btnSubmit.classList.remove('bg-gray-400', 'cursor-not-allowed');
-            btnSubmit.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+            btnSubmit.classList.add('bg-orange-600', 'hover:bg-orange-700');
         } else {
             btnSubmit.disabled = true;
             btnSubmit.classList.add('bg-gray-400', 'cursor-not-allowed');
-            btnSubmit.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+            btnSubmit.classList.remove('bg-orange-600', 'hover:bg-orange-700');
         }
     }
 

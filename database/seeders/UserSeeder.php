@@ -15,21 +15,21 @@ class UserSeeder extends Seeder
         $users = [
             [
                 'name' => 'Admin System',
-                'email' => 'admin@sik-msa.com',
+                'email' => 'sebastianusdiaz@gmail.com',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
                 'department' => 'IT',
             ],
             [
                 'name' => 'Pegawai Kantor',
-                'email' => 'pegawai@sik-msa.com',
+                'email' => 'veronikasilviyanti@gmail.com',
                 'password' => Hash::make('password'),
                 'role' => 'pegawai',
                 'department' => 'HRD',
             ],
             [
                 'name' => 'Wartawan Media',
-                'email' => 'wartawan@sik-msa.com',
+                'email' => 'darisawalistyo@gmail.com',
                 'password' => Hash::make('password'),
                 'role' => 'wartawan',
                 'department' => 'Redaksi',
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Wartawan Merangkap Pegawai',
-                'email' => 'multirole@sik-msa.com',
+                'email' => 'sebastianusristyawijayadiaz_2226240114@mhs.mdp.ac.id',
                 'password' => Hash::make('password'),
                 'roles' => ['pegawai', 'wartawan'],
                 'department' => 'Redaksi',

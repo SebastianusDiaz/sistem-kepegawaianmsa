@@ -18,8 +18,20 @@
         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
             {{-- Header --}}
             <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
-                <h2 class="text-xl font-bold">Buat Penugasan Liputan</h2>
-                <p class="text-indigo-100 text-sm mt-1">Isi detail lengkap untuk menugaskan reporter ke lapangan.</p>
+                <h2 class="text-xl font-bold">
+                    @role('wartawan')
+                        Buat Laporan Mandiri (Self-Assignment)
+                    @else
+                        Buat Penugasan Liputan
+                    @endrole
+                </h2>
+                <p class="text-indigo-100 text-sm mt-1">
+                    @role('wartawan')
+                        Buat penugasan untuk kejadian yang Anda temui langsung di lapangan.
+                    @else
+                        Isi detail lengkap untuk menugaskan wartawan ke lapangan.
+                    @endrole
+                </p>
             </div>
 
             <form action="{{ route('assignments.store') }}" method="POST" class="p-6 md:p-8 space-y-8">
@@ -70,16 +82,19 @@
                         </div>
 
                         {{-- Reporter --}}
+                        @unlessrole('wartawan')
                         <div class="sm:col-span-3">
-                            <label for="reporter_id" class="block text-sm font-medium text-gray-700">Pilih Reporter</label>
+                            <label for="reporter_id" class="block text-sm font-medium text-gray-700">Pilih Wartawan</label>
                             <select id="reporter_id" name="reporter_id"
                                 class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2.5">
                                 <option value="">-- Opsional / Open Bid --</option>
                                 @foreach($reporters as $r)
-                                    <option value="{{ $r->id }}">{{ $r->name }}</option>
+                                    <option value="{{ $r->id }}">{{ $r->name }}
+                                        ({{ $r->profile->position->name ?? 'Wartawan' }})</option>
                                 @endforeach
                             </select>
                         </div>
+                        @endunlessrole
 
                         {{-- Prioritas --}}
                         <div class="sm:col-span-3">
@@ -142,7 +157,7 @@
                                         d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                Jika Lat/Long diisi, reporter hanya bisa check-in dalam radius 500m dari lokasi.
+                                Jika Lat/Long diisi, wartawan hanya bisa check-in dalam radius 500m dari lokasi.
                             </p>
                         </div>
                     </div>
@@ -169,7 +184,7 @@
                                 <span class="text-red-500">*</span></label>
                             <input type="datetime-local" name="deadline" id="deadline" required
                                 class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm py-2.5">
-                            <p class="mt-1 text-xs text-gray-500">Reporter akan mendapat notifikasi mendekati waktu ini.</p>
+                            <p class="mt-1 text-xs text-gray-500">Wartawan akan mendapat notifikasi mendekati waktu ini.</p>
                         </div>
                     </div>
                 </div>

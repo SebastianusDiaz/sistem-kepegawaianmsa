@@ -17,8 +17,9 @@ class PerformanceReportController extends Controller
         $endDate = $request->input('end_date', now()->endOfMonth()->toDateString());
         $divisionId = $request->input('division_id');
 
-        // Get Reporters (Users with role 'wartawan')
-        $query = User::role('wartawan')->with(['profile.division', 'profile.position']);
+        // Get Reporters (Wartawan) AND Staff (Pegawai/Admin who edit)
+        // We fetch users who have either role.
+        $query = User::role(['wartawan', 'pegawai', 'admin'])->with(['profile.division', 'profile.position']);
 
         // ACCESS CONTROL: Admin & Direktur see all, others only see themselves
         if (!auth()->user()->hasRole(['admin', 'direktur'])) {
@@ -31,22 +32,55 @@ class PerformanceReportController extends Controller
             });
         }
 
-        $reporters = $query->get();
+        $users = $query->get();
 
         // Prepare Report Data
-        $reportData = $reporters->map(function ($reporter) use ($startDate, $endDate) {
-            $query = Assignment::where('reporter_id', $reporter->id)
-                ->whereBetween('start_time', ["$startDate 00:00:00", "$endDate 23:59:59"]);
+        $reportData = $users->map(function ($user) use ($startDate, $endDate) {
 
-            $total = (clone $query)->count();
-            $completed = (clone $query)->whereIn('status', ['submitted', 'published'])->count();
-            $pending = (clone $query)->whereIn('status', ['assigned', 'accepted', 'on_site'])->count();
-            $canceled = (clone $query)->where('status', 'canceled')->count();
+            // Determine if user is primarily a Reporter or an Editor
+            // For this logic, we check if they have 'wartawan' role.
+            $isWartawan = $user->hasRole('wartawan');
+
+            if ($isWartawan) {
+                // --- WARTAWAN LOGIC (By Reporter ID) ---
+                $query = Assignment::where('reporter_id', $user->id)
+                    ->whereBetween('start_time', ["$startDate 00:00:00", "$endDate 23:59:59"]);
+
+                $total = (clone $query)->count();
+
+                // Completed: Submitted or Published
+                $completed = (clone $query)->whereIn('status', ['submitted', 'published'])->count();
+
+                // On Progress: Active states including Revision
+                $pending = (clone $query)->whereIn('status', ['assigned', 'accepted', 'on_site', 'revision'])->count();
+
+                $canceled = (clone $query)->where('status', 'canceled')->count();
+
+            } else {
+                // --- PEGAWAI LOGIC (By Editor ID) ---
+                // "Kinerja pegawai berdasarkan revisi ... sampai disetujui"
+                // We count assignments where they are the EDITOR.
+                $query = Assignment::where('editor_id', $user->id)
+                    ->whereBetween('updated_at', ["$startDate 00:00:00", "$endDate 23:59:59"]); // Use updated_at or start_time? usually update for approval.
+
+                $total = (clone $query)->count();
+
+                // Approved (Target): Status 'published'
+                $completed = (clone $query)->where('status', 'published')->count();
+
+                // Pending Review/Process: Submitted or Revision
+                $pending = (clone $query)->whereIn('status', ['submitted', 'revision'])->count();
+
+                $canceled = (clone $query)->where('status', 'canceled')->count();
+            }
 
             $completionRate = $total > 0 ? round(($completed / $total) * 100, 1) : 0;
 
+            // Only return if there is some activity or user is relevant? 
+            // Often better to show 0s than nothing if they are in the list.
             return (object) [
-                'user' => $reporter,
+                'user' => $user,
+                'role_type' => $isWartawan ? 'Wartawan' : 'Pegawai',
                 'total' => $total,
                 'completed' => $completed,
                 'pending' => $pending,

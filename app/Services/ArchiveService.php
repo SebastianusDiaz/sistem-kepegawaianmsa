@@ -58,4 +58,38 @@ class ArchiveService
         // Delete DB record
         return $archive->delete();
     }
+
+    /**
+     * Archive an existing file path (for publishing workflow).
+     *
+     * @param string $existingPath
+     * @param string $source
+     * @param int|null $userId
+     * @param string|null $category
+     * @return FileArchive|null
+     */
+    public function archiveFromPath(string $existingPath, string $source, ?int $userId = null, ?string $category = null): ?FileArchive
+    {
+        // Remove 'storage/' prefix if present
+        $cleanPath = Str::after($existingPath, 'storage/');
+
+        if (!Storage::disk('public')->exists($cleanPath)) {
+            return null;
+        }
+
+        $mimeType = Storage::disk('public')->mimeType($cleanPath);
+        $size = Storage::disk('public')->size($cleanPath);
+        $originalName = basename($cleanPath);
+
+        return FileArchive::create([
+            'user_id' => $userId,
+            'original_name' => $originalName,
+            'stored_name' => $originalName,
+            'file_path' => $cleanPath,
+            'mime_type' => $mimeType,
+            'size' => $size,
+            'source' => $source,
+            'category' => $category,
+        ]);
+    }
 }

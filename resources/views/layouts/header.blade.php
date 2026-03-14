@@ -1,6 +1,6 @@
 <header class="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200 sticky top-0 z-30">
     <div class="flex items-center">
-        <button @click="sidebarOpen = !sidebarOpen" class="text-gray-500 focus:outline-none lg:hidden">
+        <button @click="sidebarOpen = !sidebarOpen" class="text-gray-500 focus:outline-none">
             <i class="fas fa-bars text-2xl"></i>
         </button>
 

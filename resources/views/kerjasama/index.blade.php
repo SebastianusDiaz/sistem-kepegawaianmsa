@@ -12,7 +12,7 @@
                 <p class="text-sm text-gray-500">Kelola perjanjian kerjasama (MoU) dengan perusahaan mitra.</p>
             </div>
             <a href="{{ route('kerjasama.create') }}"
-                class="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm">
+                class="inline-flex items-center justify-center px-4 py-2 bg-orange-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors shadow-sm">
                 <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -23,7 +23,7 @@
         {{-- Filters --}}
         <div class="flex flex-wrap gap-2">
             <a href="{{ route('kerjasama.index') }}"
-                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors {{ !request('status') ? 'bg-indigo-100 text-indigo-700' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200' }}">
+                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors {{ !request('status') ? 'bg-orange-100 text-orange-700' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200' }}">
                 Semua
             </a>
             <a href="{{ route('kerjasama.index', ['status' => 'pending']) }}"
@@ -50,6 +50,7 @@
         {{-- Table Card --}}
         <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
             <div class="overflow-x-auto">
+                {{-- REMOVED @role('direktur') around columns to allow others to see and manage --}}
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
@@ -73,10 +74,10 @@
                                     <div class="text-xs text-gray-500">{{ $k->representative_name }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                    {{ $k->start_date->format('d M Y') }} - {{ $k->end_date->format('d M Y') }}
+                                        {{ $k->start_date->format('d M Y') }} - {{ $k->end_date->format('d M Y') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                    {{ $k->pic->name ?? '-' }}
+                                        {{ $k->pic->name ?? '-' }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     @php
@@ -94,9 +95,11 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
                                     <a href="{{ route('kerjasama.show', $k) }}"
-                                        class="text-indigo-600 hover:text-indigo-900">Detail</a>
-                                    <a href="{{ route('kerjasama.edit', $k) }}"
-                                        class="text-gray-500 hover:text-gray-700">Edit</a>
+                                        class="text-orange-600 hover:text-orange-900">Detail</a>
+                                    @if(Auth::user()->hasRole('direktur') || Auth::id() == $k->created_by)
+                                        <a href="{{ route('kerjasama.edit', $k) }}"
+                                            class="text-gray-500 hover:text-gray-700">Edit</a>
+                                    @endif
                                 </td>
                             </tr>
                         @empty

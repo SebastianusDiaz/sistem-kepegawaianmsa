@@ -20,6 +20,7 @@ class Kerjasama extends Model
         'file_path',
         'status',
         'rejection_note',
+        'created_by',
         'approved_by',
         'approved_at',
     ];

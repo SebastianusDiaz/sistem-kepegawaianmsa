@@ -3,13 +3,13 @@
     x-transition:leave="transition-opacity ease-linear duration-300" x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-40 lg:hidden"></div>
 
-<aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-    class="fixed inset-y-0 left-0 z-50 w-72 bg-slate-900 text-white transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 shadow-2xl flex flex-col border-r border-slate-800">
+<aside :class="sidebarOpen ? 'translate-x-0 lg:ml-0' : '-translate-x-full lg:translate-x-0 lg:-ml-72'"
+    class="fixed inset-y-0 left-0 z-50 w-72 bg-black text-white transition-all duration-700 ease-in-out shadow-2xl flex flex-col border-r border-gray-800 lg:static">
 
-    <div class="flex items-center justify-between px-6 h-20 bg-slate-900 border-b border-slate-800 shrink-0">
+    <div class="flex items-center justify-between px-6 h-20 bg-black border-b border-gray-800 shrink-0">
         <div class="flex items-center gap-3">
             <div
-                class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-500/20">
+                class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 shadow-lg shadow-orange-500/20">
                 <i class="fas fa-newspaper text-white text-lg"></i>
             </div>
             <div class="flex flex-col">
@@ -27,8 +27,8 @@
         <div>
             <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group
                 {{ request()->routeIs('dashboard')
-    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
-    : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+    ? 'bg-orange-600 text-white shadow-lg shadow-orange-500/30'
+    : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
                 <i class="fas fa-th-large w-5 text-center transition-transform group-hover:scale-110"></i>
                 <span class="font-medium text-sm">Dashboard</span>
             </a>
@@ -40,11 +40,11 @@
                 <div class="space-y-1">
                     {{-- Manajemen Karyawan (Data Diri, Kontak, Jabatan) --}}
                     <a href="{{ route('employees.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
-                                        {{ request()->routeIs('employees.*')
-            ? 'bg-blue-500/10 text-blue-400 border-l-4 border-blue-500'
-            : 'text-slate-400 hover:bg-slate-800 hover:text-white border-l-4 border-transparent' }}">
+                                                                                            {{ request()->routeIs('employees.*')
+            ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+            : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
                         <i
-                            class="fas fa-id-card w-5 text-center {{ request()->routeIs('employees.*') ? 'text-blue-400' : 'group-hover:text-white' }}"></i>
+                            class="fas fa-id-card w-5 text-center {{ request()->routeIs('employees.*') ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
                         <span class="font-medium text-sm">Data Karyawan</span>
                     </a>
                 </div>
@@ -57,63 +57,114 @@
 
                 @if(Auth::user()->hasAnyRole(['admin', 'pegawai', 'wartawan']))
                             <a href="{{ route('absensi.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
-                                                                                    {{ request()->routeIs('absensi.*')
-                    ? 'bg-blue-500/10 text-blue-400 border-l-4 border-blue-500'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white border-l-4 border-transparent' }}">
+                                                                                                                                                                                                                                                {{ request()->routeIs('absensi.*')
+                    ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
                                 <i
-                                    class="fas fa-clock w-5 text-center {{ request()->routeIs('absensi.*') ? 'text-blue-400' : 'group-hover:text-white' }}"></i>
-                                <span class="font-medium text-sm">Absensi & Izin</span>
+                                    class="fas fa-clock w-5 text-center {{ request()->routeIs('absensi.*') ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
+                                <span class="font-medium text-sm">Absensi</span>
+                            </a>
+                @endif
+
+                @if(Auth::user()->hasAnyRole(['direktur', 'pegawai', 'admin']))
+                            <a href="{{ route('permohonan-izin.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
+                                                                                                                                                                                                                                                {{ request()->routeIs('permohonan-izin.*')
+                    ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
+                                <i
+                                    class="fas fa-calendar-alt w-5 text-center {{ request()->routeIs('permohonan-izin.*') ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
+                                <span class="font-medium text-sm">Cuti & Izin</span>
                             </a>
                 @endif
 
                 @if(Auth::user()->hasAnyRole(['admin', 'direktur', 'wartawan', 'pegawai']))
                             <a href="{{ route('assignments.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
-                                                                                    {{ request()->routeIs('assignments.*')
-                    ? 'bg-blue-500/10 text-blue-400 border-l-4 border-blue-500'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white border-l-4 border-transparent' }}">
+                                                                                                        {{ (request()->routeIs('assignments.*') && !request()->routeIs('assignments.published'))
+                    ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
                                 <i
-                                    class="fas fa-clipboard-list w-5 text-center {{ request()->routeIs('assignments.*') ? 'text-blue-400' : 'group-hover:text-white' }}"></i>
+                                    class="fas fa-clipboard-list w-5 text-center {{ (request()->routeIs('assignments.*') && !request()->routeIs('assignments.published')) ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
                                 <span class="font-medium text-sm">Penugasan Liputan</span>
+                            </a>
+                @endif
+
+                @if(Auth::user()->hasAnyRole(['admin', 'direktur', 'wartawan', 'pegawai']))
+                            <a href="{{ route('assignments.published') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
+                                                                                                            {{ request()->routeIs('assignments.published')
+                    ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
+                                <i
+                                    class="fas fa-newspaper w-5 text-center {{ request()->routeIs('assignments.published') ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
+                                <span class="font-medium text-sm">Berita Terbit</span>
                             </a>
                 @endif
 
                 <a href="{{ route('reports.performance') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
                     {{ request()->routeIs('reports.performance')
-    ? 'bg-blue-500/10 text-blue-400 border-l-4 border-blue-500'
-    : 'text-slate-400 hover:bg-slate-800 hover:text-white border-l-4 border-transparent' }}">
+    ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+    : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
                     <i
-                        class="fas fa-chart-line w-5 text-center {{ request()->routeIs('reports.performance') ? 'text-blue-400' : 'group-hover:text-white' }}"></i>
+                        class="fas fa-chart-line w-5 text-center {{ request()->routeIs('reports.performance') ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
                     <span class="font-medium text-sm">Laporan Kinerja</span>
                 </a>
+
+                @if(Auth::user()->hasAnyRole(['direktur', 'admin']))
+                            <a href="{{ route('rekap-absensi.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
+                                                                                                                                                                    {{ request()->routeIs('rekap-absensi.*')
+                    ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
+                                <i
+                                    class="fas fa-calendar-check w-5 text-center {{ request()->routeIs('rekap-absensi.*') ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
+                                <span class="font-medium text-sm">Rekap Absensi</span>
+                            </a>
+                @endif
+
+                @if(Auth::user()->hasAnyRole(['admin', 'editor', 'pegawai']))
+                            <a href="{{ route('reviews.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
+                                                                                                                                                        {{ request()->routeIs('reviews.*')
+                    ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
+                                <i
+                                    class="fas fa-clipboard-check w-5 text-center {{ request()->routeIs('reviews.*') ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
+                                <span class="font-medium text-sm">Review Liputan</span>
+                            </a>
+                @endif
             </div>
         </div>
 
         <div>
             <h3 class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Administrasi</h3>
             <div class="space-y-1">
-                <a href="{{ route('archives.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
-                    {{ request()->routeIs('archives.*')
-    ? 'bg-blue-500/10 text-blue-400 border-l-4 border-blue-500'
-    : 'text-slate-400 hover:bg-slate-800 hover:text-white border-l-4 border-transparent' }}">
-                    <i
-                        class="fas fa-archive w-5 text-center {{ request()->routeIs('archives.*') ? 'text-blue-400' : 'group-hover:text-white' }}"></i>
-                    <span class="font-medium text-sm">Arsip & Dokumen</span>
-                </a>
+                @if(Auth::user()->hasAnyRole(['admin', 'direktur']))
+                            <a href="{{ route('archives.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
+                                                                    {{ request()->routeIs('archives.*')
+                    ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
+                                <i
+                                    class="fas fa-archive w-5 text-center {{ request()->routeIs('archives.*') ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
+                                <span class="font-medium text-sm">Arsip & Dokumen</span>
+                            </a>
+                @endif
 
                 <a href="{{ route('kerjasama.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
                     {{ request()->routeIs('kerjasama.*')
-    ? 'bg-blue-500/10 text-blue-400 border-l-4 border-blue-500'
-    : 'text-slate-400 hover:bg-slate-800 hover:text-white border-l-4 border-transparent' }}">
+    ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+    : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
                     <i
-                        class="fas fa-handshake w-5 text-center {{ request()->routeIs('kerjasama.*') ? 'text-blue-400' : 'group-hover:text-white' }}"></i>
+                        class="fas fa-handshake w-5 text-center {{ request()->routeIs('kerjasama.*') ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
                     <span class="font-medium text-sm">Kerjasama (MoU)</span>
                 </a>
 
-                <a href="#"
-                    class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group text-slate-400 hover:bg-slate-800 hover:text-white border-l-4 border-transparent">
-                    <i class="fas fa-money-bill-wave w-5 text-center group-hover:text-white"></i>
-                    <span class="font-medium text-sm">Payroll / Penggajian</span>
-                </a>
+                @if(Auth::user()->hasAnyRole(['direktur', 'pegawai', 'editor', 'admin']))
+                            <a href="{{ route('payrolls.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
+                                                        {{ request()->routeIs('payrolls.*')
+                    ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white border-l-4 border-transparent' }}">
+                                <i
+                                    class="fas fa-money-bill-wave w-5 text-center {{ request()->routeIs('payrolls.*') ? 'text-orange-400' : 'group-hover:text-white' }}"></i>
+                                <span class="font-medium text-sm">Payroll / Penggajian</span>
+                            </a>
+                @endif
             </div>
         </div>
 
@@ -122,27 +173,27 @@
                 <h3 class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">System</h3>
                 <div class="space-y-1">
                     <a href="{{ route('users.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
-                                            {{ request()->routeIs('users.*')
+                                                                                                {{ request()->routeIs('users.*')
             ? 'bg-red-500/10 text-red-400 border-l-4 border-red-500'
-            : 'text-slate-400 hover:bg-slate-800 hover:text-red-300 border-l-4 border-transparent' }}">
+            : 'text-gray-400 hover:bg-gray-800 hover:text-red-300 border-l-4 border-transparent' }}">
                         <i
                             class="fas fa-users-cog w-5 text-center {{ request()->routeIs('users.*') ? 'text-red-400' : 'group-hover:text-red-300' }}"></i>
                         <span class="font-medium text-sm">Manajemen User (Akun)</span>
                     </a>
 
                     <a href="{{ route('divisions.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
-                                            {{ request()->routeIs('divisions.*')
+                                                                                                {{ request()->routeIs('divisions.*')
             ? 'bg-red-500/10 text-red-400 border-l-4 border-red-500'
-            : 'text-slate-400 hover:bg-slate-800 hover:text-red-300 border-l-4 border-transparent' }}">
+            : 'text-gray-400 hover:bg-gray-800 hover:text-red-300 border-l-4 border-transparent' }}">
                         <i
                             class="fas fa-sitemap w-5 text-center {{ request()->routeIs('divisions.*') ? 'text-red-400' : 'group-hover:text-red-300' }}"></i>
                         <span class="font-medium text-sm">Data Divisi</span>
                     </a>
 
                     <a href="{{ route('positions.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors group
-                                            {{ request()->routeIs('positions.*')
+                                                                                                {{ request()->routeIs('positions.*')
             ? 'bg-red-500/10 text-red-400 border-l-4 border-red-500'
-            : 'text-slate-400 hover:bg-slate-800 hover:text-red-300 border-l-4 border-transparent' }}">
+            : 'text-gray-400 hover:bg-gray-800 hover:text-red-300 border-l-4 border-transparent' }}">
                         <i
                             class="fas fa-briefcase w-5 text-center {{ request()->routeIs('positions.*') ? 'text-red-400' : 'group-hover:text-red-300' }}"></i>
                         <span class="font-medium text-sm">Data Jabatan</span>
@@ -152,10 +203,10 @@
         @endif
     </nav>
 
-    <div class="p-4 border-t border-slate-800 bg-slate-900/50">
+    <div class="p-4 border-t border-gray-800 bg-gray-900/50">
         <div class="flex items-center gap-3">
             <div
-                class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 font-bold border border-slate-600">
+                class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 font-bold border border-gray-600">
                 {{ substr(Auth::user()->name, 0, 2) }}
             </div>
             <div class="flex-1 min-w-0">
@@ -163,13 +214,13 @@
                     {{ Auth::user()->name }}
                 </p>
                 <p class="text-xs text-slate-500 truncate capitalize">
-                    {{ Auth::user()->getRoleNames()->first() ?? 'User' }}
+                    {{ Auth::user()->getRoleNames()->join(', ') ?: 'User' }}
                 </p>
             </div>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit"
-                    class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+                    class="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
                     title="Logout">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
